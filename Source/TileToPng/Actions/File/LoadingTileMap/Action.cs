@@ -35,6 +35,7 @@ namespace Grayscale.TileToPng.Actions.LoadingTileMap
             {
                 string text = File.ReadAllText(file);
 
+                // ファイルパス、または別名。
                 string[] tokens = text.Split(',');
                 int index = 0;
 
@@ -46,6 +47,12 @@ namespace Grayscale.TileToPng.Actions.LoadingTileMap
                         {
                             string token = tokens[index].Trim();
                             index++;
+
+                            // リストにあれば置換。
+                            if (Program.FileListModel.ImagePath.ContainsKey(token))
+                            {
+                                token = Program.FileListModel.ImagePath[token];
+                            }
 
                             // 「%HOME%」という文字列が含まれていれば、フォルダーへのパスに置き換えるぜ☆（＾▽＾）
                             if (-1 < token.IndexOf("%HOME%", StringComparison.CurrentCulture))

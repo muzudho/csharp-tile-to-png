@@ -47,6 +47,16 @@ namespace Grayscale.TileToPng.Actions.SavingTileMap
                             filename = "%HOME%" + filename.Substring(Application.StartupPath.Length);
                         }
 
+                        // リストにあれば短縮名に置換。
+                        foreach(var pair in Program.FileListModel.ImagePath)
+                        {
+                            if (pair.Value == filename)
+                            {
+                                filename = pair.Key;
+                                break;
+                            }
+                        }
+
                         sb.Append(filename);
                         sb.Append(",");
                     }

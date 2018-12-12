@@ -10,6 +10,11 @@ namespace Grayscale.TileToPng
     static class Program
     {
         /// <summary>
+        /// ファイル パスの短縮名が入っている。
+        /// </summary>
+        public static FileListModel FileListModel { get; set; }
+
+        /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
@@ -18,12 +23,14 @@ namespace Grayscale.TileToPng
             Trace.Listeners.Clear();
             Trace.Listeners.Add(new ConsoleTraceListener());
 
-            var fileList = FileListModel.ReadFile("image-file-path.toml");
+            FileListModel = FileListModel.ReadFile("image-file-path.toml");
+#if DEBUG
+            // デバッグ表示
             Trace.WriteLine(string.Format(
                 CultureInfo.CurrentCulture,
                 "fileList.ImagePath.Count: {0}.",
-                fileList.ImagePath.Count));
-            foreach(var pair in fileList.ImagePath)
+                FileListModel.ImagePath.Count));
+            foreach(var pair in FileListModel.ImagePath)
             {
                 Trace.WriteLine(string.Format(
                     CultureInfo.CurrentCulture,
@@ -31,6 +38,7 @@ namespace Grayscale.TileToPng
                     pair.Key,
                     pair.Value));
             }
+#endif
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
