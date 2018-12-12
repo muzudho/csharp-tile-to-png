@@ -46,7 +46,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                         for (; iToken < tokens.Length; iToken++)
                         {
                             string token = tokens[iToken].Trim();
-                            if (token.StartsWith("0b") && 2 < token.Length)
+                            if (token.StartsWith("0b", false, CultureInfo.CurrentCulture) && 2 < token.Length)
                             {
                                 // 2進数表記だ。頭の２文字を取る。
                                 token = token.Substring("0b".Length);

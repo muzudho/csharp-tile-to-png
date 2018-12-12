@@ -31,9 +31,13 @@ namespace Grayscale.TileToPng
             this.ucMain1.SelectionMargin = commandline.Margin;
             this.ucMain1.SelectionBrush = new SolidBrush(Color.FromArgb(commandline.ColorA, commandline.ColorR, commandline.ColorG, commandline.ColorB));
 
-
             string binary = Convert.ToString(this.ucMain1.Selection, 2);
-            MessageBox.Show("デバッグ binary=" + binary + " scanOrder=" + commandline.ScanOrder + " margin=" + commandline.Margin.ToString());
+            var message = string.Format(
+                "デバッグ binary={0} scanOrder={1} margin={2}",
+                binary,
+                commandline.ScanOrder,
+                commandline.Margin.ToString());
+            MessageBox.Show(message);
             this.Refresh();
         }
 
