@@ -94,6 +94,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyMapping\ControlC\Action.cs" />
+    <Compile Include="KeyMapping\ControlC\ContextModel.cs" />
+    <Compile Include="KeyMapping\ControlC\InputModel.cs" />
+    <Compile Include="KeyMapping\ControlC\OutputModel.cs" />
+    <Compile Include="KeyMapping\ControlV\Action.cs" />
+    <Compile Include="KeyMapping\ControlV\ContextModel.cs" />
+    <Compile Include="KeyMapping\ControlV\InputModel.cs" />
+    <Compile Include="KeyMapping\ControlV\OutputModel.cs" />
+    <Compile Include="KeyMapping\ControlX\Action.cs" />
+    <Compile Include="KeyMapping\ControlX\ContextModel.cs" />
+    <Compile Include="KeyMapping\ControlX\InputModel.cs" />
+    <Compile Include="KeyMapping\ControlX\OutputModel.cs" />
     <Compile Include="Misc\TileToException.cs" />
     <Compile Include="Options\IEngineOption.cs" />
     <Compile Include="Options\EngineOptionNames.cs" />
@@ -129,6 +141,8 @@
       <DependentUpon>MainUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SizeHandle\CircleSizeHandle.cs" />
+    <Compile Include="TileMapModel\TileMapItem.cs" />
+    <Compile Include="TileMapModel\TileMapModel.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

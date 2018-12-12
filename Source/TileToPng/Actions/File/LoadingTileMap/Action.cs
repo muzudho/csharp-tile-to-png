@@ -55,14 +55,12 @@ namespace Grayscale.TileToPng.Actions.LoadingTileMap
 
                             if (string.IsNullOrEmpty(token))
                             {
-                                context.MainUserControl.GridFileNames[iLayer][y][x] = "";
-                                context.MainUserControl.GridImages[iLayer][y][x] = null;
+                                context.MainUserControl.TileMapModel.SetItem(iLayer, y, x, TileMapItem.Empty);
                             }
                             else
                             {
-                                context.MainUserControl.GridFileNames[iLayer][y][x] = token;
                                 // とりあえず画像読み込み
-                                context.MainUserControl.GridImages[iLayer][y][x] = Image.FromFile(token);
+                                context.MainUserControl.TileMapModel.SetItem(iLayer, y, x, new TileMapItem(token, Image.FromFile(token)));
                             }
                         }
                     }

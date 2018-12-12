@@ -10,6 +10,9 @@ using System.Text;
 using System.Windows.Forms;
 using LoadingTileMap = Grayscale.TileToPng.Actions.LoadingTileMap;
 using SavingTileMap = Grayscale.TileToPng.Actions.SavingTileMap;
+using ControlC = Grayscale.TileToPng.KeyMapping.ControlC;
+using ControlV = Grayscale.TileToPng.KeyMapping.ControlV;
+using ControlX = Grayscale.TileToPng.KeyMapping.ControlX;
 
 namespace Grayscale.TileToPng
 {
@@ -59,14 +62,9 @@ namespace Grayscale.TileToPng
         Grid grid;
 
         /// <summary>
-        /// ファイル名のテーブル。
+        /// タイル マップ 構造。
         /// </summary>
-        public string[][][] GridFileNames { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public Image[][][] GridImages { get; set; }
+        public TileMapModel TileMapModel { get; set; }
 
         /// <summary>
         /// 
@@ -86,13 +84,17 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// （コピー＆ペースト）
         /// </summary>
-        string clipboardFilename;
-        Image clipboardImage;
+        public string ClipboardFilename { get; set; }
+
+        /// <summary>
+        /// （コピー＆ペースト）
+        /// </summary>
+        public Image ClipboardImage { get; set; }
 
         /// <summary>
         /// 水色のカーソル
         /// </summary>
-        RectangleCursor TileCursor { get; set; }
+        public RectangleCursor TileCursor { get; set; }
 
         /// <summary>
         /// レイヤー表示（編集レイヤー・ラジオボタン）
@@ -183,25 +185,7 @@ namespace Grayscale.TileToPng
             // テーブル
             //────────────────────────────────────────
             // とりあえず固定長で。
-            this.GridFileNames = new string[MainUserControl.GridMaxLayer][][];
-            for (int i = 0; i < this.GridFileNames.Length; i++)
-            {
-                this.GridFileNames[i] = new string[MainUserControl.GridMaxHeight][];
-                for (int j = 0; j < this.GridFileNames[i].Length; j++)
-                {
-                    this.GridFileNames[i][j] = new string[MainUserControl.GridMaxWidth];
-                }
-            }
-
-            this.GridImages = new Image[MainUserControl.GridMaxLayer][][];
-            for (int i = 0; i < this.GridImages.Length; i++)
-            {
-                this.GridImages[i] = new Image[MainUserControl.GridMaxHeight][];
-                for (int j = 0; j < this.GridImages[i].Length; j++)
-                {
-                    this.GridImages[i][j] = new Image[MainUserControl.GridMaxWidth];
-                }
-            }
+            this.TileMapModel = new TileMapModel();
 
 
             //────────────────────────────────────────
@@ -312,12 +296,13 @@ namespace Grayscale.TileToPng
                     {
                         for (int x = 0; x < MainUserControl.GridMaxWidth; x++)
                         {
-                            if (null != this.GridImages[iLayer][y][x])
+                            var tile = this.TileMapModel.GetItem(iLayer, y, x);
+                            if (tile != null && tile.Image != null)
                             {
-                                g.DrawImage(this.GridImages[iLayer][y][x],
+                                g.DrawImage(
+                                    this.TileMapModel.GetItem(iLayer, y, x).Image,
                                     x * this.grid.CellW + this.grid.OriginX,
-                                    y * this.grid.CellH + this.grid.OriginY
-                                    );
+                                    y * this.grid.CellH + this.grid.OriginY);
                             }
                         }
                     }
@@ -533,13 +518,13 @@ namespace Grayscale.TileToPng
                                 {
                                     for (int col = 0; col < cols; col++)
                                     {
-                                        if (null != this.GridImages[iLayer][row][col])
+                                        if (null != this.TileMapModel.GetItem(iLayer, row, col))
                                         {
                                             // マージン無し
-                                            g.DrawImage(this.GridImages[iLayer][row][col],
+                                            g.DrawImage(
+                                                this.TileMapModel.GetItem(iLayer, row, col).Image,
                                                 col * this.grid.CellW,
-                                                row * this.grid.CellH
-                                                );
+                                                row * this.grid.CellH);
                                         }
                                     }
                                 }
@@ -661,25 +646,32 @@ namespace Grayscale.TileToPng
                     //────────────────────────────────────────
                     case Keys.C:
                         // コピー
-                        this.clipboardFilename = this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
-                        this.clipboardImage = this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
+                        {
+                            ControlC.ContextModel context = new ControlC.ContextModel(this);
+                            ControlC.InputModel input = new ControlC.InputModel();
+                            ControlC.OutputModel output = new ControlC.OutputModel();
+                            ControlC.Action.Perform(context, input, output);
+                        }
                         break;
 
                     case Keys.X:
                         // カット
-                        this.clipboardFilename = this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
-                        this.clipboardImage = this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
-
-                        this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
-                        this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
-                        this.Refresh();
+                        {
+                            ControlX.ContextModel context = new ControlX.ContextModel(this);
+                            ControlX.InputModel input = new ControlX.InputModel();
+                            ControlX.OutputModel output = new ControlX.OutputModel();
+                            ControlX.Action.Perform(context, input, output);
+                        }
                         break;
 
                     case Keys.V:
                         // ペースト
-                        this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = this.clipboardFilename;
-                        this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = this.clipboardImage;
-                        this.Refresh();
+                        {
+                            ControlV.ContextModel context = new ControlV.ContextModel(this);
+                            ControlV.InputModel input = new ControlV.InputModel();
+                            ControlV.OutputModel output = new ControlV.OutputModel();
+                            ControlV.Action.Perform(context, input, output);
+                        }
                         break;
 
                     //────────────────────────────────────────
@@ -745,10 +737,12 @@ namespace Grayscale.TileToPng
                 //────────────────────────────────────────
                 // 編集
                 //────────────────────────────────────────
-                case Keys.Delete://削除
-                    this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
-                    this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
-                    this.Refresh();
+                case Keys.Delete:
+                    //削除
+                    {
+                        this.TileMapModel.SetItem(this.TileCursor.ZOrder, this.TileCursor.TopIndex, this.TileCursor.LeftIndex, TileMapItem.Empty);
+                        this.Refresh();
+                    }
                     break;
 
                 //────────────────────────────────────────
@@ -815,10 +809,8 @@ namespace Grayscale.TileToPng
                     this.TileCursor.TopIndex < GridMaxHeight
                     )
                 {
-                    this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = name;
-
                     // とりあえず画像読み込み
-                    this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = Image.FromFile(name);
+                    this.TileMapModel.SetItem(this.TileCursor.ZOrder, this.TileCursor.TopIndex, this.TileCursor.LeftIndex, new TileMapItem(name, Image.FromFile(name)));
 
                     // カーソルを右へ。
                     this.TileCursor.MoveToRight(1);
@@ -849,6 +841,24 @@ namespace Grayscale.TileToPng
                 TileCursor.TopIndex * grid.CellH + grid.OriginY,
                 grid.CellW,
                 grid.CellH);
+        }
+
+        /// <summary>
+        /// カーソルが指しているタイル項目。
+        /// </summary>
+        /// <returns></returns>
+        public TileMapItem GetTileOnCursor()
+        {
+            return this.TileMapModel.GetItem(this.TileCursor.ZOrder, this.TileCursor.TopIndex, this.TileCursor.LeftIndex);
+        }
+
+        /// <summary>
+        /// カーソルが指しているタイル項目に内容をセットする。
+        /// </summary>
+        /// <returns></returns>
+        public void SetTileOnCursor(TileMapItem item)
+        {
+            this.TileMapModel.SetItem(this.TileCursor.ZOrder, this.TileCursor.TopIndex, this.TileCursor.LeftIndex, item);
         }
     }
 }
