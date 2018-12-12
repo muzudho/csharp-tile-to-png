@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.Actions.SavingWork
+﻿namespace Grayscale.TileToPng.Actions.SavingTileMap
 {
     /// <summary>
     /// 

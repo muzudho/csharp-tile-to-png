@@ -7,8 +7,8 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using LoadingWork = Grayscale.TileToPng.Actions.LoadingWork;
-using SavingWork = Grayscale.TileToPng.Actions.SavingWork;
+using LoadingTileMap = Grayscale.TileToPng.Actions.LoadingTileMap;
+using SavingTileMap = Grayscale.TileToPng.Actions.SavingTileMap;
 
 namespace Grayscale.TileToPng
 {
@@ -700,20 +700,20 @@ namespace Grayscale.TileToPng
                     case Keys.S:
                         // 保存
                         {
-                            SavingWork.ContextModel context = new SavingWork.ContextModel(this);
-                            SavingWork.InputModel input = new SavingWork.InputModel();
-                            SavingWork.OutputModel output = new SavingWork.OutputModel();
-                            SavingWork.Action.Perform(context, input, output);
+                            SavingTileMap.ContextModel context = new SavingTileMap.ContextModel(this);
+                            SavingTileMap.InputModel input = new SavingTileMap.InputModel();
+                            SavingTileMap.OutputModel output = new SavingTileMap.OutputModel("TileToPng_save.txt");
+                            SavingTileMap.Action.Perform(context, input, output);
                         }
                         break;
 
                     case Keys.L:
                         // 前回の作業状態から再開。
                         {
-                            LoadingWork.ContextModel context = new LoadingWork.ContextModel(this);
-                            LoadingWork.InputModel input = new LoadingWork.InputModel();
-                            LoadingWork.OutputModel output = new LoadingWork.OutputModel();
-                            LoadingWork.Action.Perform(context, input, output);
+                            LoadingTileMap.ContextModel context = new LoadingTileMap.ContextModel(this);
+                            LoadingTileMap.InputModel input = new LoadingTileMap.InputModel("TileToPng_save.txt");
+                            LoadingTileMap.OutputModel output = new LoadingTileMap.OutputModel();
+                            LoadingTileMap.Action.Perform(context, input, output);
                         }
                         break;
                 }

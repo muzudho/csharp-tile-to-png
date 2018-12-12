@@ -3,10 +3,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Grayscale.TileToPng.Actions.LoadingWork
+namespace Grayscale.TileToPng.Actions.LoadingTileMap
 {
     /// <summary>
-    /// 前回の作業状態から再開。
+    /// タイルマップをCSV形式で読取。
     /// </summary>
     public sealed class Action
     {
@@ -30,7 +30,7 @@ namespace Grayscale.TileToPng.Actions.LoadingWork
                 throw new ArgumentNullException("output");
             }
 
-            string file = Path.Combine(Application.StartupPath, "TileToPng_save.txt");
+            string file = Path.Combine(Application.StartupPath, input.SaveFile);
             if (File.Exists(file))
             {
                 string text = File.ReadAllText(file);

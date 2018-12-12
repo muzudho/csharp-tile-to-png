@@ -4,10 +4,10 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Grayscale.TileToPng.Actions.SavingWork
+namespace Grayscale.TileToPng.Actions.SavingTileMap
 {
     /// <summary>
-    /// 作業状態の保存。
+    /// タイルマップをCSV形式で保存。
     /// </summary>
     public sealed class Action
     {
@@ -41,7 +41,6 @@ namespace Grayscale.TileToPng.Actions.SavingWork
                     {
                         string filename = context.MainUserControl.GridFilenames[iLayer][y][x];
 
-
                         // フォルダーへのパスを「%HOME%」という文字に置き換えて短くするんだぜ☆（＾▽＾）
                         if (null != filename && filename.StartsWith(Application.StartupPath))
                         {
@@ -55,7 +54,7 @@ namespace Grayscale.TileToPng.Actions.SavingWork
                 }
             }
 
-            string file = Path.Combine(Application.StartupPath, "TileToPng_save.txt");
+            string file = Path.Combine(Application.StartupPath, output.SaveFile);
             File.WriteAllText(file, sb.ToString());
         }
 
