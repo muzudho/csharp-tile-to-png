@@ -1,9 +1,9 @@
-﻿namespace Grayscale.TileToPng.CommandLine
+﻿namespace Grayscale.TileToPng.CommandLineModel
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface Margin
+    public interface IMargin
     {
         /// <summary>
         /// 上側。

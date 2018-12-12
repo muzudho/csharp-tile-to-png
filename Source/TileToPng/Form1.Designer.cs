@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             Grayscale.TileToPng.Menu.Menubar menubarImpl1 = new Grayscale.TileToPng.Menu.Menubar();
-            Grayscale.TileToPng.CommandLine.MarginImpl marginImpl1 = new Grayscale.TileToPng.CommandLine.MarginImpl();
-            this.ucMain1 = new Grayscale.TileToPng.UcMain();
-            this.ucCommandline1 = new Grayscale.TileToPng.UcCommandline();
+            Grayscale.TileToPng.CommandLineModel.Margin marginImpl1 = new Grayscale.TileToPng.CommandLineModel.Margin();
+            this.ucMain1 = new Grayscale.TileToPng.MainUserControl();
+            this.ucCommandline1 = new Grayscale.TileToPng.CommandlineUserControl();
             this.SuspendLayout();
             // 
             // ucMain1
@@ -48,7 +48,7 @@
             marginImpl1.South = 0;
             marginImpl1.West = 0;
             this.ucMain1.SelectionMargin = marginImpl1;
-            this.ucMain1.SelectionScanOrder = Grayscale.TileToPng.CommandLine.ScanOrder.None;
+            this.ucMain1.SelectionScanOrder = Grayscale.TileToPng.CommandLineModel.ScanOrder.None;
             this.ucMain1.Size = new System.Drawing.Size(550, 373);
             this.ucMain1.TabIndex = 0;
             // 
@@ -76,8 +76,8 @@
 
         #endregion
 
-        private UcMain ucMain1;
-        private UcCommandline ucCommandline1;
+        private MainUserControl ucMain1;
+        private CommandlineUserControl ucCommandline1;
     }
 }
 

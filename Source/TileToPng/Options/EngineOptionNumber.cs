@@ -5,12 +5,12 @@ namespace Grayscale.TileToPng.Options
     /// <summary>
     /// 
     /// </summary>
-    public class EngineOption_BoolImpl : IEngineOption
+    public class EngineOptionNumber : IEngineOption
     {
         /// <summary>
         /// 
         /// </summary>
-        public EngineOption_BoolImpl()
+        public EngineOptionNumber()
         {
         }
 
@@ -18,20 +18,30 @@ namespace Grayscale.TileToPng.Options
         /// 
         /// </summary>
         /// <param name="value"></param>
+        public EngineOptionNumber(long value)
+        {
+            this.Value = value;
+            this.Default = value;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         /// <param name="defaultValue"></param>
-        public EngineOption_BoolImpl(bool value, bool defaultValue)
+        public EngineOptionNumber(long value, long defaultValue)
         {
             this.Value = value;
             this.Default = defaultValue;
         }
 
         /// <summary>
-        /// 既定値
+        /// 既定値 long
         /// </summary>
         public object Default { get; set; }
 
         /// <summary>
-        /// 現在値
+        /// 現在値 long
         /// </summary>
         public object Value { get; set; }
 
@@ -41,7 +51,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public bool IsTrue()
         {
-            return (bool)this.Value;
+            throw new ApplicationException("型変換エラー");
         }
 
         /// <summary>
@@ -50,7 +60,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public long GetNumber()
         {
-            throw new ApplicationException("型変換エラー");
+            return (long)this.Value;
         }
 
         /// <summary>
@@ -59,7 +69,7 @@ namespace Grayscale.TileToPng.Options
         /// <param name="value"></param>
         public void ParseValue(string value)
         {
-            if (bool.TryParse(value, out bool result))
+            if (long.TryParse(value, out long result))
             {
                 this.Value = result;
             }

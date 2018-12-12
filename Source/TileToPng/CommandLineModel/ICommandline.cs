@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Grayscale.TileToPng.CommandLine
+namespace Grayscale.TileToPng.CommandLineModel
 {
     /// <summary>
     /// 
@@ -15,7 +15,7 @@ namespace Grayscale.TileToPng.CommandLine
         /// <summary>
         /// 何かしらのマージン。北、東、南、西。用途は任意。
         /// </summary>
-        Margin Margin { get; set; }
+        IMargin Margin { get; set; }
 
         /// <summary>
         /// 何かしらの色。

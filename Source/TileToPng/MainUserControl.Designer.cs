@@ -1,6 +1,6 @@
 ﻿namespace Grayscale.TileToPng
 {
-    partial class UcMain
+    partial class MainUserControl
     {
         /// <summary> 
         /// Required designer variable.

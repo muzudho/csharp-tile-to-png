@@ -1,6 +1,18 @@
-﻿namespace Grayscale.TileToPng.Mouse
+﻿using Grayscale.TileToPng.Mouse;
+
+namespace Grayscale.TileToPng.Mouse
 {
-    interface MouseOperation
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MouseOperation : IMouseOperation
     {
+        /// <summary>
+        ///
+        /// </summary>
+        public MouseOperation()
+        {
+
+        }
     }
 }

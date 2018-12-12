@@ -37,16 +37,16 @@ namespace Grayscale.TileToPng.Options
         /// </summary>
         /// <param name="name"></param>
         /// <param name="entry"></param>
-        public void ParseValue_AutoAdd(string name, string value)
+        public void ParseValue_AutoAdd(string name, string entry)
         {
             if (this.ContainsKey(name))
             {
-                this.m_entries_[name].ParseValue(value);
+                this.m_entries_[name].ParseValue(entry);
             }
             else
             {
                 // 文字列型項目の追加。
-                this.m_entries_.Add(name, new EngineOption_StringImpl( value));
+                this.m_entries_.Add(name, new EngineOptionString( entry));
             }
         }
 

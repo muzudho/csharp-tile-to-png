@@ -41,8 +41,8 @@ namespace Grayscale.TileToPng.Menu
         /// <summary>
         /// 描画
         /// </summary>
-        /// <param name="g"></param>
-        void Paint(Graphics g);
+        /// <param name="gra"></param>
+        void Paint(Graphics gra);
 
         /// <summary>
         /// マウス左ボタン押下時

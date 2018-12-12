@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.CommandLine
+﻿namespace Grayscale.TileToPng.CommandLineModel
 {
     /// <summary>
     /// 
@@ -18,7 +18,7 @@
         public Commandline(
             long number,
             ScanOrder scanOrder,
-            Margin margin,
+            IMargin margin,
             int colorA,
             int colorR,
             int colorG,
@@ -42,7 +42,7 @@
         /// <summary>
         /// 何かしらのマージン。北、東、南、西。用途は任意。
         /// </summary>
-        public Margin Margin { get; set; }
+        public IMargin Margin { get; set; }
 
         /// <summary>
         /// 何かしらの色。

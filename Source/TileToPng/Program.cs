@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 
+[assembly: CLSCompliant(true)]
 namespace Grayscale.TileToPng
 {
     static class Program

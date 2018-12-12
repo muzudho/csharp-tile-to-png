@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="name"></param>
         /// <param name="entry"></param>
-        void ParseValue_AutoAdd(string name, string value);
+        void ParseValue_AutoAdd(string name, string entry);
 
         /// <summary>
         /// 項目を追加。

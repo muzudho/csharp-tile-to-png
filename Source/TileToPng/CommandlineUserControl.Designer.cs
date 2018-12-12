@@ -1,6 +1,6 @@
 ﻿namespace Grayscale.TileToPng
 {
-    partial class UcCommandline
+    partial class CommandlineUserControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.textBox1.Size = new System.Drawing.Size(660, 25);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "select 0b101010101010 hsw margin=1,1,1,1";
-            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox1_KeyDown);
             // 
             // UcCommandline
             // 

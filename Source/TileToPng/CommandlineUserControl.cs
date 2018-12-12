@@ -1,17 +1,16 @@
-﻿using Grayscale.TileToPng.CommandLine;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Grayscale.TileToPng
 {
     /// <summary>
     /// 
     /// </summary>
-    public partial class UcCommandline : UserControl
+    public partial class CommandlineUserControl : UserControl
     {
         /// <summary>
         /// 
         /// </summary>
-        public UcCommandline()
+        public CommandlineUserControl()
         {
             InitializeComponent();
         }
@@ -21,7 +20,7 @@ namespace Grayscale.TileToPng
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void TextBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

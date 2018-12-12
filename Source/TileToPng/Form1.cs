@@ -1,4 +1,4 @@
-﻿using Grayscale.TileToPng.CommandLine;
+﻿using Grayscale.TileToPng.CommandLineModel;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

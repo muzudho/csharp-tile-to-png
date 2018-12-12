@@ -1,5 +1,8 @@
-﻿namespace Grayscale.TileToPng.CommandLine
+﻿namespace Grayscale.TileToPng.CommandLineModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum ScanOrder
     {
         /// <summary>

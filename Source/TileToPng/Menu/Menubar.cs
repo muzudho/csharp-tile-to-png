@@ -1,4 +1,5 @@
 ﻿using Grayscale.TileToPng.Menu;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -32,14 +33,14 @@ namespace Grayscale.TileToPng.Menu
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="left">x 座標。</param>
+        /// <param name="top">y 座標。</param>
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="font"></param>
-        public Menubar(int x, int y, int width, int height, Font font)
+        public Menubar(int left, int top, int width, int height, Font font)
         {
-            this.Bounds = new Rectangle(x,y,width,height);
+            this.Bounds = new Rectangle(left,top,width,height);
             this.BrushBackground = new LinearGradientBrush(
                 new Point(0, 0),
                 new Point(0, height),
@@ -88,10 +89,15 @@ namespace Grayscale.TileToPng.Menu
         /// <summary>
         /// 描画
         /// </summary>
-        /// <param name="g"></param>
-        public void Paint(Graphics g)
+        /// <param name="gra"></param>
+        public void Paint(Graphics gra)
         {
-            g.FillRectangle(this.BrushBackground, this.Bounds);
+            if (gra == null)
+            {
+                throw new ArgumentNullException("gra");
+            }
+
+            gra.FillRectangle(this.BrushBackground, this.Bounds);
 
             // カーソル・モード
             string label;
@@ -108,7 +114,7 @@ namespace Grayscale.TileToPng.Menu
                     break;
             }
 
-            g.DrawString(label, this.Font,this.BrushText, new PointF(this.Bounds.X, this.Bounds.Y));
+            gra.DrawString(label, this.Font,this.BrushText, new PointF(this.Bounds.X, this.Bounds.Y));
         }
 
         /// <summary>

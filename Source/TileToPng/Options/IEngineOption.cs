@@ -1,8 +1,10 @@
 ﻿namespace Grayscale.TileToPng.Options
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IEngineOption
     {
-
         /// <summary>
         /// 現在値（文字列読取）
         /// </summary>

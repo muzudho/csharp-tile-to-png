@@ -21,8 +21,8 @@ namespace Grayscale.TileToPng
             float cellH
             )
         {
-            Ox = ox;
-            Oy = oy;
+            OriginX = ox;
+            OriginY = oy;
             CellW = cellW;
             CellH = cellH;
         }
@@ -30,12 +30,12 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// 原点x
         /// </summary>
-        public float Ox { get; set; }
+        public float OriginX { get; set; }
 
         /// <summary>
         /// 原点y
         /// </summary>
-        public float Oy { get; set; }
+        public float OriginY { get; set; }
 
         /// <summary>
         /// セル横幅
@@ -57,7 +57,7 @@ namespace Grayscale.TileToPng
         /// </summary>
         public int Cols
         {
-            get { return (int)((End.X - Ox) / CellW); }
+            get { return (int)((End.X - OriginX) / CellW); }
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Grayscale.TileToPng
         /// </summary>
         public int Rows
         {
-            get { return (int)((End.Y - Oy) / CellH); }
+            get { return (int)((End.Y - OriginY) / CellH); }
         }
     }
 }

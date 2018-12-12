@@ -1,9 +1,11 @@
-﻿using Grayscale.TileToPng.CommandLine;
-using System;
-using System.Drawing;
+﻿using System;
+using System.Globalization;
 
-namespace Grayscale.TileToPng.CommandLine
+namespace Grayscale.TileToPng.CommandLineModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class UtilCommandlineParser
     {
         /// <summary>
@@ -18,10 +20,15 @@ namespace Grayscale.TileToPng.CommandLine
         /// <returns></returns>
         public static ICommandline Parse(string line)
         {
+            if (line == null)
+            {
+                throw new ArgumentNullException("line");
+            }
+
             string commandName = "";
             long number = 0L;
             ScanOrder scanOrder = ScanOrder.None;
-            Margin margin = new MarginImpl();
+            IMargin margin = new Margin();
             int colorA = -1;
             int colorR = -1;
             int colorG = -1;
@@ -29,7 +36,7 @@ namespace Grayscale.TileToPng.CommandLine
 
 
             string[] tokens = line.Split(' ');
-            for(int iToken = 0; iToken<tokens.Length; iToken++)
+            for (int iToken = 0; iToken < tokens.Length; iToken++)
             {
                 switch (tokens[iToken])
                 {
@@ -39,7 +46,7 @@ namespace Grayscale.TileToPng.CommandLine
                         for (; iToken < tokens.Length; iToken++)
                         {
                             string token = tokens[iToken].Trim();
-                            if (token.StartsWith("0b") && 2<token.Length)
+                            if (token.StartsWith("0b") && 2 < token.Length)
                             {
                                 // 2進数表記だ。頭の２文字を取る。
                                 token = token.Substring("0b".Length);
@@ -52,19 +59,18 @@ namespace Grayscale.TileToPng.CommandLine
 
                                 number = Convert.ToInt32(token, 2);
                             }
-                            else if ("hsw"==token)
+                            else if ("hsw" == token)
                             {
                                 scanOrder = ScanOrder.Hsw;
                             }
-                            else if (token.StartsWith("margin="))
+                            else if (token.StartsWith("margin=", false, CultureInfo.CurrentCulture))
                             {
                                 token = token.Substring("margin=".Length);
                                 // 残りはカンマ区切り。
                                 string[] numbers = token.Split(',');
                                 if (3 < numbers.Length)
                                 {
-                                    int num;
-                                    if(int.TryParse(numbers[0],out num))
+                                    if (int.TryParse(numbers[0], out int num))
                                     {
                                         margin.North = num;
                                     }
@@ -85,15 +91,14 @@ namespace Grayscale.TileToPng.CommandLine
                                     }
                                 }
                             }
-                            else if (token.StartsWith("color="))
+                            else if (token.StartsWith("color=", false, CultureInfo.CurrentCulture))
                             {
                                 token = token.Substring("color=".Length);
                                 // 残りはカンマ区切り。ARGB
                                 string[] numbers = token.Split(',');
                                 if (3 < numbers.Length)
                                 {
-                                    int num;
-                                    if (int.TryParse(numbers[0], out num))
+                                    if (int.TryParse(numbers[0], out int num))
                                     {
                                         colorA = num;
                                     }
@@ -123,7 +128,7 @@ namespace Grayscale.TileToPng.CommandLine
             switch (commandName)
             {
                 case "select":
-                    if (-1==colorA && -1==colorR && -1==colorG && -1==colorB)
+                    if (-1 == colorA && -1 == colorR && -1 == colorG && -1 == colorB)
                     {
                         // 半透明の黄色☆
                         colorA = 128;

@@ -2,49 +2,50 @@
 
 namespace Grayscale.TileToPng.Options
 {
-    public class EngineOption_StringImpl : IEngineOption
+    /// <summary>
+    /// 
+    /// </summary>
+    public class EngineOptionString : IEngineOption
     {
-        public EngineOption_StringImpl()
+        /// <summary>
+        /// 
+        /// </summary>
+        public EngineOptionString()
         {
-            this.m_value_ = "";
-            this.m_default_ = "";
+            this.Value = "";
+            this.Default = "";
         }
 
         /// <summary>
         /// 最初に入ってきた値を、既定値とします。
         /// </summary>
         /// <param name="value"></param>
-        public EngineOption_StringImpl(string value)
+        public EngineOptionString(string value)
         {
-            this.m_value_ = value;
-            this.m_default_ = value;
+            this.Value = value;
+            this.Default = value;
         }
 
-        public EngineOption_StringImpl(string value, string defaultValue)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public EngineOptionString(string value, string defaultValue)
         {
-            this.m_value_ = value;
-            this.m_default_ = defaultValue;
+            this.Value = value;
+            this.Default = defaultValue;
         }
 
         /// <summary>
         /// 既定値 string
         /// </summary>
-        string m_default_;
-        public object Default
-        {
-            get { return this.m_default_; }
-            set { this.m_default_ = (string)value; }
-        }
+        public object Default { get; set; }
 
         /// <summary>
         /// 現在値
         /// </summary>
-        string m_value_;
-        public object Value
-        {
-            get { return this.m_value_; }
-            set { this.m_value_ = (string)value; }
-        }
+        public object Value { get; set; }
 
         /// <summary>
         /// 論理値型でのみ使用可能。論理値型でない場合、エラー。
@@ -52,7 +53,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public bool IsTrue()
         {
-            if (bool.TryParse(this.m_value_,out bool result))
+            if (bool.TryParse((string)this.Value,out bool result))
             {
                 return result;
             }
@@ -67,7 +68,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public long GetNumber()
         {
-            if (long.TryParse(this.m_value_, out long result))
+            if (long.TryParse((string)this.Value, out long result))
             {
                 return result;
             }
@@ -81,7 +82,7 @@ namespace Grayscale.TileToPng.Options
         /// <param name="value"></param>
         public void ParseValue(string value)
         {
-            this.m_value_ = value;
+            this.Value = value;
         }
     }
 }
