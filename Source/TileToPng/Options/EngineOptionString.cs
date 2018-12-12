@@ -13,7 +13,7 @@ namespace Grayscale.TileToPng.Options
         public EngineOptionString()
         {
             this.Value = "";
-            this.Default = "";
+            this.DefaultValue = "";
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Grayscale.TileToPng.Options
         public EngineOptionString(string value)
         {
             this.Value = value;
-            this.Default = value;
+            this.DefaultValue = value;
         }
 
         /// <summary>
@@ -34,13 +34,13 @@ namespace Grayscale.TileToPng.Options
         public EngineOptionString(string value, string defaultValue)
         {
             this.Value = value;
-            this.Default = defaultValue;
+            this.DefaultValue = defaultValue;
         }
 
         /// <summary>
         /// 既定値 string
         /// </summary>
-        public object Default { get; set; }
+        public object DefaultValue { get; set; }
 
         /// <summary>
         /// 現在値
@@ -58,7 +58,7 @@ namespace Grayscale.TileToPng.Options
                 return result;
             }
 
-            throw new ApplicationException("型変換エラー");
+            throw new TileToException("型変換エラー");
         }
 
 
@@ -66,14 +66,14 @@ namespace Grayscale.TileToPng.Options
         /// 数値型でのみ使用可能。数値型でない場合、エラー。
         /// </summary>
         /// <returns></returns>
-        public long GetNumber()
+        public long ToNumber()
         {
             if (long.TryParse((string)this.Value, out long result))
             {
                 return result;
             }
 
-            throw new ApplicationException("型変換エラー");
+            throw new TileToException("型変換エラー");
         }
 
         /// <summary>

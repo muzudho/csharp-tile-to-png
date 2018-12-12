@@ -21,7 +21,7 @@ namespace Grayscale.TileToPng.Options
         public EngineOptionNumber(long value)
         {
             this.Value = value;
-            this.Default = value;
+            this.DefaultValue = value;
         }
 
         /// <summary>
@@ -32,13 +32,13 @@ namespace Grayscale.TileToPng.Options
         public EngineOptionNumber(long value, long defaultValue)
         {
             this.Value = value;
-            this.Default = defaultValue;
+            this.DefaultValue = defaultValue;
         }
 
         /// <summary>
         /// 既定値 long
         /// </summary>
-        public object Default { get; set; }
+        public object DefaultValue { get; set; }
 
         /// <summary>
         /// 現在値 long
@@ -51,14 +51,14 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public bool IsTrue()
         {
-            throw new ApplicationException("型変換エラー");
+            throw new TileToException("型変換エラー");
         }
 
         /// <summary>
         /// 数値型でのみ使用可能。数値型でない場合、エラー。
         /// </summary>
         /// <returns></returns>
-        public long GetNumber()
+        public long ToNumber()
         {
             return (long)this.Value;
         }

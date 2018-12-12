@@ -37,7 +37,7 @@ namespace Grayscale.TileToPng.Options
         /// </summary>
         /// <param name="name"></param>
         /// <param name="entry"></param>
-        public void ParseValue_AutoAdd(string name, string entry)
+        public void ParseValueAutoAdd(string name, string entry)
         {
             if (this.ContainsKey(name))
             {

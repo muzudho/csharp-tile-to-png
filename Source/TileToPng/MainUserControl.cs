@@ -3,6 +3,7 @@ using Grayscale.TileToPng.Menu;
 using Grayscale.TileToPng.Options;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -58,7 +59,7 @@ namespace Grayscale.TileToPng
         /// ファイル名のテーブル。
         /// </summary>
         string[][][] gridFilenames;
-        Image[,,] gridImages;
+        Image[][][] gridImages;
         const int GRID_MAX_WIDTH = 30;
         const int GRID_MAX_HEIGHT = 30;
         const int GRID_MAX_LAYER = 5;
@@ -172,15 +173,23 @@ namespace Grayscale.TileToPng
             this.gridFilenames = new string[MainUserControl.GRID_MAX_LAYER][][];
             for (int i = 0; i < this.gridFilenames.Length; i++)
             {
-                var layer = this.gridFilenames[i];
-                layer = new string[MainUserControl.GRID_MAX_HEIGHT][];
-                for (int j = 0; j < layer.Length; j++)
+                this.gridFilenames[i] = new string[MainUserControl.GRID_MAX_HEIGHT][];
+                for (int j = 0; j < this.gridFilenames[i].Length; j++)
                 {
-                    var row = layer[j];
-                    row = new string[MainUserControl.GRID_MAX_WIDTH];
+                    this.gridFilenames[i][j] = new string[MainUserControl.GRID_MAX_WIDTH];
                 }
             }
-            this.gridImages = new Image[MainUserControl.GRID_MAX_LAYER, MainUserControl.GRID_MAX_HEIGHT, MainUserControl.GRID_MAX_WIDTH];
+
+            this.gridImages = new Image[MainUserControl.GRID_MAX_LAYER][][];
+            for (int i = 0; i < this.gridImages.Length; i++)
+            {
+                this.gridImages[i] = new Image[MainUserControl.GRID_MAX_HEIGHT][];
+                for (int j = 0; j < this.gridImages[i].Length; j++)
+                {
+                    this.gridImages[i][j] = new Image[MainUserControl.GRID_MAX_WIDTH];
+                }
+            }
+
 
             //────────────────────────────────────────
             // レイヤー表示（編集レイヤー・ラジオボタン）
@@ -299,9 +308,9 @@ namespace Grayscale.TileToPng
                     {
                         for (int x = 0; x < MainUserControl.GRID_MAX_WIDTH; x++)
                         {
-                            if (null != this.gridImages[iLayer, y, x])
+                            if (null != this.gridImages[iLayer][y][x])
                             {
-                                g.DrawImage(this.gridImages[iLayer, y, x],
+                                g.DrawImage(this.gridImages[iLayer][y][x],
                                     x * this.grid.CellW + this.grid.OriginX,
                                     y * this.grid.CellH + this.grid.OriginY
                                     );
@@ -485,15 +494,16 @@ namespace Grayscale.TileToPng
             {
                 StringBuilder s = new StringBuilder();
                 DateTime now = System.DateTime.Now;
-                s.Append(string.Format("{0:0000}{1:00}{2:00}_{3:00}{4:00}{5:00}_{6:000}",
+                s.Append(string.Format(
+                    CultureInfo.CurrentCulture,
+                    "{0:0000}{1:00}{2:00}_{3:00}{4:00}{5:00}_{6:000}",
                     now.Year,
                     now.Month,
                     now.Day,
                     now.Hour,
                     now.Minute,
                     now.Second,
-                    now.Millisecond
-                    ));
+                    now.Millisecond));
                 timestamp = s.ToString();
             }
 
@@ -503,41 +513,43 @@ namespace Grayscale.TileToPng
 
                 try
                 {
-                    Bitmap bitmap;
-                    bitmap = new Bitmap(
+                    using (var bitmap = new Bitmap(
                         (int)(cols * this.grid.CellW),
                         (int)(rows * this.grid.CellH)
-                        );
-                    g = Graphics.FromImage(bitmap);
-
-                    // とりあえず画像描画
-                    for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+                        ))
                     {
-                        if (this.layersVisibled[iLayer])
+                        g = Graphics.FromImage(bitmap);
+
+                        // とりあえず画像描画
+                        for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
                         {
-                            for (int row = 0; row < rows; row++)
+                            if (this.layersVisibled[iLayer])
                             {
-                                for (int col = 0; col < cols; col++)
+                                for (int row = 0; row < rows; row++)
                                 {
-                                    if (null != this.gridImages[iLayer, row, col])
+                                    for (int col = 0; col < cols; col++)
                                     {
-                                        // マージン無し
-                                        g.DrawImage(this.gridImages[iLayer, row, col],
-                                            col * this.grid.CellW,
-                                            row * this.grid.CellH
-                                            );
+                                        if (null != this.gridImages[iLayer][row][col])
+                                        {
+                                            // マージン無し
+                                            g.DrawImage(this.gridImages[iLayer][row][col],
+                                                col * this.grid.CellW,
+                                                row * this.grid.CellH
+                                                );
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        // 選択範囲描画
+                        this.PaintSelection(g, true);
+
+                        string file = Path.Combine(Application.StartupPath, "TileToPng_" + timestamp + ".png");
+                        bitmap.Save(file, System.Drawing.Imaging.ImageFormat.Png);
+                        var message = string.Format(CultureInfo.CurrentCulture, "保存しました： {0}", file);
+                        MessageBox.Show(message);
                     }
-
-                    // 選択範囲描画
-                    this.PaintSelection(g, true);
-
-                    string file = Path.Combine(Application.StartupPath, "TileToPng_" + timestamp + ".png");
-                    bitmap.Save(file, System.Drawing.Imaging.ImageFormat.Png);
-                    MessageBox.Show("保存しました： " + file);
                 }
                 finally
                 {
@@ -643,23 +655,23 @@ namespace Grayscale.TileToPng
                     case Keys.C:
                         // コピー
                         this.clipboardFilename = this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
-                        this.clipboardImage = this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X];
+                        this.clipboardImage = this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
                         break;
 
                     case Keys.X:
                         // カット
                         this.clipboardFilename = this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
-                        this.clipboardImage = this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X];
+                        this.clipboardImage = this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
 
                         this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
-                        this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X] = null;
+                        this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
                         this.Refresh();
                         break;
 
                     case Keys.V:
                         // ペースト
                         this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardFilename;
-                        this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X] = this.clipboardImage;
+                        this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardImage;
                         this.Refresh();
                         break;
 
@@ -718,7 +730,7 @@ namespace Grayscale.TileToPng
                 //────────────────────────────────────────
                 case Keys.Delete://削除
                     this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
-                    this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X] = null;
+                    this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
                     this.Refresh();
                     break;
 
@@ -789,7 +801,7 @@ namespace Grayscale.TileToPng
                     this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = name;
 
                     // とりあえず画像読み込み
-                    this.gridImages[this.cursorZ, this.cursorPos.Y, this.cursorPos.X] = Image.FromFile(name);
+                    this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = Image.FromFile(name);
 
                     // カーソルを右へ。
                     this.cursorPos.X++;
@@ -827,16 +839,16 @@ namespace Grayscale.TileToPng
                                 token = token.Replace("%HOME%", Application.StartupPath);
                             }
 
-                            if ("" == token)
+                            if (string.IsNullOrEmpty(token))
                             {
                                 this.gridFilenames[iLayer][y][x] = "";
-                                this.gridImages[iLayer, y, x] = null;
+                                this.gridImages[iLayer][y][x] = null;
                             }
                             else
                             {
                                 this.gridFilenames[iLayer][y][x] = token;
                                 // とりあえず画像読み込み
-                                this.gridImages[iLayer, y, x] = Image.FromFile(token);
+                                this.gridImages[iLayer][y][x] = Image.FromFile(token);
                             }
                         }
                     }

@@ -21,13 +21,13 @@
         /// 数値型でのみ使用可能。数値型でない場合、エラー。
         /// </summary>
         /// <returns></returns>
-        long GetNumber();
+        long ToNumber();
 
         /// <summary>
         /// 既定値
         /// bool, long, string
         /// </summary>
-        object Default { get; set; }
+        object DefaultValue { get; set; }
 
         /// <summary>
         /// 現在値
