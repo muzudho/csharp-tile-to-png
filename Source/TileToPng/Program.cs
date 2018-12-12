@@ -1,5 +1,6 @@
 ﻿using NLua;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 [assembly: CLSCompliant(true)]
@@ -13,6 +14,9 @@ namespace Grayscale.TileToPng
         [STAThread]
         static void Main()
         {
+            Trace.Listeners.Clear();
+            Trace.Listeners.Add(new ConsoleTraceListener());
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

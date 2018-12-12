@@ -2,6 +2,7 @@
 using Grayscale.TileToPng.Menu;
 using Grayscale.TileToPng.Options;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -91,7 +92,7 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// 水色のカーソル
         /// </summary>
-        RectangleCursor RectangleCursor { get; set; }
+        RectangleCursor TileCursor { get; set; }
 
         /// <summary>
         /// レイヤー表示（編集レイヤー・ラジオボタン）
@@ -175,8 +176,8 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // カーソル
             //────────────────────────────────────────
-            this.RectangleCursor = new RectangleCursor();
-            this.UpdateCursorPixel();
+            this.TileCursor = new RectangleCursor();
+            this.UpdateTileCursorPixel();
 
             //────────────────────────────────────────
             // テーブル
@@ -265,7 +266,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
-                if (iLayer == this.RectangleCursor.ZOrder)
+                if (iLayer == this.TileCursor.ZOrder)
                 {
                     g.FillEllipse(this.brushGreen, this.layersEditsRadiobuttons[iLayer]);
                 }
@@ -331,7 +332,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // 青い四角のカーソル
             //────────────────────────────────────────
-            g.DrawRectangle(this.penBlue, this.RectangleCursor.Bounds.X, this.RectangleCursor.Bounds.Y, this.RectangleCursor.Bounds.Width, this.RectangleCursor.Bounds.Height);
+            g.DrawRectangle(this.penBlue, this.TileCursor.Bounds.X, this.TileCursor.Bounds.Y, this.TileCursor.Bounds.Width, this.TileCursor.Bounds.Height);
 
             // 「つまみ」を角っこに置きます。
             if (this.circleSizeHandle.Pressing)
@@ -591,7 +592,7 @@ namespace Grayscale.TileToPng
             {
                 if (this.layersEditsRadiobuttons[iLayer].Contains(e.Location))
                 {
-                    this.RectangleCursor.ZOrder = iLayer;
+                    this.TileCursor.ZOrder = iLayer;
                     isRefresh = true;
                     break;
                 }
@@ -613,11 +614,11 @@ namespace Grayscale.TileToPng
             if (!isRefresh)
             {
                 // まだ何もクリックしていなければ、カーソル移動をする。
-                RectangleCursor.SetLocationPixel(
+                TileCursor.SetLocationOnTable(
                     (int)((e.X - grid.OriginX) / grid.CellW),
                     (int)((e.Y - grid.OriginY) / grid.CellH));
 
-                this.UpdateCursorPixel();
+                this.UpdateTileCursorPixel();
                 isRefresh = true;
             }
 
@@ -660,24 +661,24 @@ namespace Grayscale.TileToPng
                     //────────────────────────────────────────
                     case Keys.C:
                         // コピー
-                        this.clipboardFilename = this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X];
-                        this.clipboardImage = this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X];
+                        this.clipboardFilename = this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
+                        this.clipboardImage = this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
                         break;
 
                     case Keys.X:
                         // カット
-                        this.clipboardFilename = this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X];
-                        this.clipboardImage = this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X];
+                        this.clipboardFilename = this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
+                        this.clipboardImage = this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex];
 
-                        this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = null;
-                        this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = null;
+                        this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
+                        this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
                         this.Refresh();
                         break;
 
                     case Keys.V:
                         // ペースト
-                        this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = this.clipboardFilename;
-                        this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = this.clipboardImage;
+                        this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = this.clipboardFilename;
+                        this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = this.clipboardImage;
                         this.Refresh();
                         break;
 
@@ -713,31 +714,31 @@ namespace Grayscale.TileToPng
                 //────────────────────────────────────────
                 case Keys.Enter://改行
                     this.DoNewline();
-                    this.UpdateCursorPixel();
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Up://↑
-                    this.RectangleCursor.MoveToBottom(-1);
-                    this.UpdateCursorPixel();
+                    this.TileCursor.MoveToBottom(-1);
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Right://→
-                    this.RectangleCursor.MoveToRight(1);
-                    this.UpdateCursorPixel();
+                    this.TileCursor.MoveToRight(1);
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Down://↓
-                    this.RectangleCursor.MoveToBottom(1);
-                    this.UpdateCursorPixel();
+                    this.TileCursor.MoveToBottom(1);
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Left://←
-                    this.RectangleCursor.MoveToRight(-1);
-                    this.UpdateCursorPixel();
+                    this.TileCursor.MoveToRight(-1);
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                     break;
 
@@ -745,8 +746,8 @@ namespace Grayscale.TileToPng
                 // 編集
                 //────────────────────────────────────────
                 case Keys.Delete://削除
-                    this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = null;
-                    this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = null;
+                    this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
+                    this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = null;
                     this.Refresh();
                     break;
 
@@ -781,12 +782,12 @@ namespace Grayscale.TileToPng
         private void DoNewline()
         {
             if (
-                this.RectangleCursor.Position.Y + 1 < GridMaxHeight
+                this.TileCursor.TopIndex + 1 < GridMaxHeight
             )
             {
                 // 強制改行
-                this.RectangleCursor.SetLeft(0);
-                this.RectangleCursor.MoveToBottom(1);
+                this.TileCursor.SetLeft(0);
+                this.TileCursor.MoveToBottom(1);
             }
         }
 
@@ -802,26 +803,26 @@ namespace Grayscale.TileToPng
             foreach (string name in fileNames)
             {
                 if (
-                    GridMaxWidth <= this.RectangleCursor.Position.X
+                    GridMaxWidth <= this.TileCursor.LeftIndex
                     )
                 {
                     this.DoNewline();
                 }
 
                 if (
-                    this.RectangleCursor.Position.X < GridMaxWidth
+                    this.TileCursor.LeftIndex < GridMaxWidth
                     &&
-                    this.RectangleCursor.Position.Y < GridMaxHeight
+                    this.TileCursor.TopIndex < GridMaxHeight
                     )
                 {
-                    this.GridFileNames[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = name;
+                    this.GridFileNames[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = name;
 
                     // とりあえず画像読み込み
-                    this.GridImages[this.RectangleCursor.ZOrder][this.RectangleCursor.Position.Y][this.RectangleCursor.Position.X] = Image.FromFile(name);
+                    this.GridImages[this.TileCursor.ZOrder][this.TileCursor.TopIndex][this.TileCursor.LeftIndex] = Image.FromFile(name);
 
                     // カーソルを右へ。
-                    this.RectangleCursor.MoveToRight(1);
-                    this.UpdateCursorPixel();
+                    this.TileCursor.MoveToRight(1);
+                    this.UpdateTileCursorPixel();
                     this.Refresh();
                 }
             }
@@ -836,11 +837,16 @@ namespace Grayscale.TileToPng
             this.Menubar.UpdateSize(this.Width);
         }
 
-        private void UpdateCursorPixel()
+        private void UpdateTileCursorPixel()
         {
-            RectangleCursor.SetBoundsPixel(
-                RectangleCursor.Position.X * grid.CellW + grid.OriginX,
-                RectangleCursor.Position.Y * grid.CellH + grid.OriginY,
+            Trace.WriteLine(string.Format(
+                CultureInfo.CurrentCulture,
+                "TileCursor.LeftIndex: {0}, TileCursor.TopIndex: {1}.",
+                TileCursor.LeftIndex,
+                TileCursor.TopIndex));
+            TileCursor.SetBoundsOnPixel(
+                TileCursor.LeftIndex * grid.CellW + grid.OriginX,
+                TileCursor.TopIndex * grid.CellH + grid.OriginY,
                 grid.CellW,
                 grid.CellH);
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Grayscale.TileToPng
 {
@@ -21,6 +16,28 @@ namespace Grayscale.TileToPng
         /// 盤上の位置。
         /// </summary>
         public Point Position { get; set; }
+
+        /// <summary>
+        /// 盤上のヨコ位置。
+        /// </summary>
+        public int LeftIndex
+        {
+            get
+            {
+                return Position.X;
+            }
+        }
+
+        /// <summary>
+        /// 盤上のタテ位置。
+        /// </summary>
+        public int TopIndex
+        {
+            get
+            {
+                return Position.Y;
+            }
+        }
 
         /// <summary>
         /// Z位置。
@@ -42,7 +59,7 @@ namespace Grayscale.TileToPng
         /// <param name="offsetX"></param>
         public void MoveToRight(int offsetX)
         {
-            this.Position = new Point(this.Position.X + offsetX, this.Position.Y);
+            this.Position = new Point(this.LeftIndex + offsetX, this.TopIndex);
         }
 
         /// <summary>
@@ -51,7 +68,7 @@ namespace Grayscale.TileToPng
         /// <param name="offsetY"></param>
         public void MoveToBottom(int offsetY)
         {
-            this.Position = new Point(this.Position.X, this.Position.Y + offsetY);
+            this.Position = new Point(this.LeftIndex, this.TopIndex + offsetY);
         }
 
         /// <summary>
@@ -60,7 +77,7 @@ namespace Grayscale.TileToPng
         /// <param name="left"></param>
         public void SetLeft(int left)
         {
-            this.Position = new Point(left, this.Position.Y);
+            this.Position = new Point(left, this.TopIndex);
         }
 
         /// <summary>
@@ -69,7 +86,7 @@ namespace Grayscale.TileToPng
         /// <param name="top"></param>
         public void SetTop(int top)
         {
-            this.Position = new Point(this.Position.X, top);
+            this.Position = new Point(this.LeftIndex, top);
         }
 
         /// <summary>
@@ -77,13 +94,9 @@ namespace Grayscale.TileToPng
         /// </summary>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public void SetLocationPixel(float left, float top)
+        public void SetLocationOnTable(int left, int top)
         {
-            this.Bounds = new RectangleF(
-                left,
-                top,
-                this.Bounds.Width,
-                this.Bounds.Height);
+            this.Position = new Point(left, top);
         }
 
         /// <summary>
@@ -93,7 +106,7 @@ namespace Grayscale.TileToPng
         /// <param name="top"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void SetBoundsPixel(float left, float top, float width, float height)
+        public void SetBoundsOnPixel(float left, float top, float width, float height)
         {
             this.Bounds = new RectangleF(left, top, width, height);
         }
