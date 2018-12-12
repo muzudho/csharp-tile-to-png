@@ -63,6 +63,9 @@
     <Reference Include="KopiLua">
       <HintPath>..\..\NLua.NoPInvoke\net45\KopiLua.dll</HintPath>
     </Reference>
+    <Reference Include="Nett, Version=0.10.0.0, Culture=neutral, PublicKeyToken=605dcfe7a1d3365b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nett.0.10.0\lib\Net40\Nett.dll</HintPath>
+    </Reference>
     <Reference Include="NLua">
       <HintPath>..\..\NLua.NoPInvoke\net45\NLua.dll</HintPath>
     </Reference>
@@ -141,6 +144,7 @@
       <DependentUpon>MainUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SizeHandle\CircleSizeHandle.cs" />
+    <Compile Include="FileListModel\FileListModel.cs" />
     <Compile Include="TileMapModel\TileMapItem.cs" />
     <Compile Include="TileMapModel\TileMapModel.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -162,6 +166,7 @@
     <EmbeddedResource Include="MainUserControl.resx">
       <DependentUpon>MainUserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

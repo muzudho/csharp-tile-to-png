@@ -1,6 +1,7 @@
 ﻿using NLua;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
 
 [assembly: CLSCompliant(true)]
@@ -16,6 +17,20 @@ namespace Grayscale.TileToPng
         {
             Trace.Listeners.Clear();
             Trace.Listeners.Add(new ConsoleTraceListener());
+
+            var fileList = FileListModel.ReadFile("image-file-path.toml");
+            Trace.WriteLine(string.Format(
+                CultureInfo.CurrentCulture,
+                "fileList.ImagePath.Count: {0}.",
+                fileList.ImagePath.Count));
+            foreach(var pair in fileList.ImagePath)
+            {
+                Trace.WriteLine(string.Format(
+                    CultureInfo.CurrentCulture,
+                    "{0}: '{1}'.",
+                    pair.Key,
+                    pair.Value));
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
