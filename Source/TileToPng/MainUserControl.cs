@@ -50,8 +50,7 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// リサイズ用のつまみ。
         /// </summary>
-        RectangleF resizeHandle;
-        bool resizerPressing;
+        CircleSizeHandle circleSizeHandle;
 
         /// <summary>
         /// グリッド
@@ -160,13 +159,10 @@ namespace Grayscale.TileToPng
                 );
 
             // リサイズハンドル（リサイズ用のつまみ）は、グリッドの右下に付く。
-            this.resizeHandle = new RectangleF(
-                //タテ線５本分の横幅
+            // タテ線５本分の横幅と、ヨコ線５本分の横幅
+            this.circleSizeHandle = new CircleSizeHandle(
                 5 * this.grid.CellW + this.grid.OriginX - 20.0f / 2,
-                //ヨコ線５本分の横幅
-                5 * this.grid.CellH + this.grid.OriginY - 20.0f / 2,
-                20.0f,
-                20.0f);
+                5 * this.grid.CellH + this.grid.OriginY - 20.0f / 2);
 
             this.UpdateGridSize();
 
@@ -251,9 +247,8 @@ namespace Grayscale.TileToPng
         {
             // ヨコ線とタテ線の終点
             this.grid.End = new PointF(
-                this.resizeHandle.X + this.resizeHandle.Width / 2,
-                this.resizeHandle.Y + this.resizeHandle.Height / 2
-                );
+                this.circleSizeHandle.Bounds.X + this.circleSizeHandle.Bounds.Width / 2,
+                this.circleSizeHandle.Bounds.Y + this.circleSizeHandle.Bounds.Height / 2);
         }
 
         /// <summary>
@@ -339,13 +334,13 @@ namespace Grayscale.TileToPng
             g.DrawRectangle(this.penBlue, this.RectangleCursor.Bounds.X, this.RectangleCursor.Bounds.Y, this.RectangleCursor.Bounds.Width, this.RectangleCursor.Bounds.Height);
 
             // 「つまみ」を角っこに置きます。
-            if (this.resizerPressing)
+            if (this.circleSizeHandle.Pressing)
             {
-                g.DrawEllipse(this.penBlue, this.resizeHandle);
+                g.DrawEllipse(this.penBlue, this.circleSizeHandle.Bounds);
             }
             else
             {
-                g.DrawEllipse(this.penGold, this.resizeHandle);
+                g.DrawEllipse(this.penGold, this.circleSizeHandle.Bounds);
             }
 
             //────────────────────────────────────────
@@ -363,8 +358,8 @@ namespace Grayscale.TileToPng
             )
             {
                 string binary = Convert.ToString(this.Selection, 2);
-                int height = (int)(this.resizeHandle.Height / this.grid.CellH);
-                int width = (int)(this.resizeHandle.Width / this.grid.CellW);
+                int height = (int)(this.circleSizeHandle.Bounds.Height / this.grid.CellH);
+                int width = (int)(this.circleSizeHandle.Bounds.Width / this.grid.CellW);
 
                 PointF origin;
                 if (ScanOrder.Hsw == this.SelectionScanOrder)
@@ -574,9 +569,9 @@ namespace Grayscale.TileToPng
             bool isRefresh = false;
 
             // リサイズハンドル
-            if (this.resizeHandle.Contains(e.Location))
+            if (this.circleSizeHandle.Bounds.Contains(e.Location))
             {
-                this.resizerPressing = true;
+                this.circleSizeHandle.Pressing = true;
                 isRefresh = true;
             }
 
@@ -635,19 +630,20 @@ namespace Grayscale.TileToPng
 
         private void UcMain_MouseUp(object sender, MouseEventArgs e)
         {
-            if (this.resizerPressing)
+            if (this.circleSizeHandle.Pressing)
             {
-                this.resizerPressing = false;
+                this.circleSizeHandle.Pressing = false;
                 this.Refresh();
             }
         }
 
         private void UcMain_MouseMove(object sender, MouseEventArgs e)
         {
-            if (this.resizerPressing)
+            if (this.circleSizeHandle.Pressing)
             {
-                this.resizeHandle.X = e.X - this.resizeHandle.Width / 2;
-                this.resizeHandle.Y = e.Y - this.resizeHandle.Height / 2;
+                this.circleSizeHandle.SetLocationPixel(
+                    e.X - this.circleSizeHandle.Bounds.Width / 2,
+                    e.Y - this.circleSizeHandle.Bounds.Height / 2);
                 this.UpdateGridSize();
                 this.Refresh();
             }
