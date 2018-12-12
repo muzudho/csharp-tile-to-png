@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using LoadingWork = Grayscale.TileToPng.Actions.LoadingWork;
+using SavingWork = Grayscale.TileToPng.Actions.SavingWork;
 
 namespace Grayscale.TileToPng
 {
@@ -56,14 +57,31 @@ namespace Grayscale.TileToPng
         /// グリッド
         /// </summary>
         Grid grid;
+
         /// <summary>
         /// ファイル名のテーブル。
         /// </summary>
-        public string[][][] gridFilenames;
-        public Image[][][] gridImages;
-        public const int GRID_MAX_WIDTH = 30;
-        public const int GRID_MAX_HEIGHT = 30;
-        public const int GRID_MAX_LAYER = 5;
+        public string[][][] GridFilenames { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Image[][][] GridImages { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int GridMaxWidth { get { return 30; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int GridMaxHeight { get { return 30; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int GridMaxLayer { get { return 5; } }
 
         /// <summary>
         /// （コピー＆ペースト）
@@ -171,23 +189,23 @@ namespace Grayscale.TileToPng
             // テーブル
             //────────────────────────────────────────
             // とりあえず固定長で。
-            this.gridFilenames = new string[MainUserControl.GRID_MAX_LAYER][][];
-            for (int i = 0; i < this.gridFilenames.Length; i++)
+            this.GridFilenames = new string[MainUserControl.GridMaxLayer][][];
+            for (int i = 0; i < this.GridFilenames.Length; i++)
             {
-                this.gridFilenames[i] = new string[MainUserControl.GRID_MAX_HEIGHT][];
-                for (int j = 0; j < this.gridFilenames[i].Length; j++)
+                this.GridFilenames[i] = new string[MainUserControl.GridMaxHeight][];
+                for (int j = 0; j < this.GridFilenames[i].Length; j++)
                 {
-                    this.gridFilenames[i][j] = new string[MainUserControl.GRID_MAX_WIDTH];
+                    this.GridFilenames[i][j] = new string[MainUserControl.GridMaxWidth];
                 }
             }
 
-            this.gridImages = new Image[MainUserControl.GRID_MAX_LAYER][][];
-            for (int i = 0; i < this.gridImages.Length; i++)
+            this.GridImages = new Image[MainUserControl.GridMaxLayer][][];
+            for (int i = 0; i < this.GridImages.Length; i++)
             {
-                this.gridImages[i] = new Image[MainUserControl.GRID_MAX_HEIGHT][];
-                for (int j = 0; j < this.gridImages[i].Length; j++)
+                this.GridImages[i] = new Image[MainUserControl.GridMaxHeight][];
+                for (int j = 0; j < this.GridImages[i].Length; j++)
                 {
-                    this.gridImages[i][j] = new Image[MainUserControl.GRID_MAX_WIDTH];
+                    this.GridImages[i][j] = new Image[MainUserControl.GridMaxWidth];
                 }
             }
 
@@ -195,12 +213,12 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー表示（編集レイヤー・ラジオボタン）
             //────────────────────────────────────────
-            this.layersEditsRadiobuttons = new RectangleF[MainUserControl.GRID_MAX_LAYER];
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            this.layersEditsRadiobuttons = new RectangleF[MainUserControl.GridMaxLayer];
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 this.layersEditsRadiobuttons[iLayer] = new RectangleF(
                     32.0f,
-                    (MainUserControl.GRID_MAX_LAYER - 1 - iLayer) * this.grid.CellH + 20.0f - 20.0f / 2 + this.grid.OriginY,
+                    (MainUserControl.GridMaxLayer - 1 - iLayer) * this.grid.CellH + 20.0f - 20.0f / 2 + this.grid.OriginY,
                     20.0f,
                     20.0f
                     );
@@ -209,16 +227,16 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー表示（可視レイヤー・チェックボックス）
             //────────────────────────────────────────
-            this.layersVisibled = new bool[MainUserControl.GRID_MAX_LAYER];
-            this.layersVisibledCheckboxes = new Rectangle[MainUserControl.GRID_MAX_LAYER];
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            this.layersVisibled = new bool[MainUserControl.GridMaxLayer];
+            this.layersVisibledCheckboxes = new Rectangle[MainUserControl.GridMaxLayer];
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 // 初期状態はすべて可視
                 this.layersVisibled[iLayer] = true;
 
                 this.layersVisibledCheckboxes[iLayer] = new Rectangle(
                     8,
-                    (int)((MainUserControl.GRID_MAX_LAYER - 1 - iLayer) * this.grid.CellH + 20.0f - 20.0f / 2 + this.grid.OriginY),
+                    (int)((MainUserControl.GridMaxLayer - 1 - iLayer) * this.grid.CellH + 20.0f - 20.0f / 2 + this.grid.OriginY),
                     20,
                     20
                     );
@@ -261,7 +279,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー関連（編集レイヤー・ラジオボタン）
             //────────────────────────────────────────
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 if (iLayer == this.cursorZ)
                 {
@@ -274,7 +292,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー関連（可視レイヤー・チェックボックス）
             //────────────────────────────────────────
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 if (this.layersVisibled[iLayer])
                 {
@@ -301,17 +319,17 @@ namespace Grayscale.TileToPng
             }
 
             // とりあえず画像描画
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 if (this.layersVisibled[iLayer])
                 {
-                    for (int y = 0; y < MainUserControl.GRID_MAX_HEIGHT; y++)
+                    for (int y = 0; y < MainUserControl.GridMaxHeight; y++)
                     {
-                        for (int x = 0; x < MainUserControl.GRID_MAX_WIDTH; x++)
+                        for (int x = 0; x < MainUserControl.GridMaxWidth; x++)
                         {
-                            if (null != this.gridImages[iLayer][y][x])
+                            if (null != this.GridImages[iLayer][y][x])
                             {
-                                g.DrawImage(this.gridImages[iLayer][y][x],
+                                g.DrawImage(this.GridImages[iLayer][y][x],
                                     x * this.grid.CellW + this.grid.OriginX,
                                     y * this.grid.CellH + this.grid.OriginY
                                     );
@@ -441,14 +459,14 @@ namespace Grayscale.TileToPng
                 cols = (int)((this.grid.End.X - this.grid.OriginX) / this.grid.CellW);
                 rows = (int)((this.grid.End.Y - this.grid.OriginY) / this.grid.CellH);
 
-                if (MainUserControl.GRID_MAX_WIDTH < cols)
+                if (MainUserControl.GridMaxWidth < cols)
                 {
-                    cols = MainUserControl.GRID_MAX_WIDTH;
+                    cols = MainUserControl.GridMaxWidth;
                 }
 
-                if (MainUserControl.GRID_MAX_HEIGHT < rows)
+                if (MainUserControl.GridMaxHeight < rows)
                 {
-                    rows = MainUserControl.GRID_MAX_HEIGHT;
+                    rows = MainUserControl.GridMaxHeight;
                 }
 
                 /*１マスに、でかい画像を使っていることもあるので、これは理屈が合わなくなるぜ。
@@ -522,7 +540,7 @@ namespace Grayscale.TileToPng
                         g = Graphics.FromImage(bitmap);
 
                         // とりあえず画像描画
-                        for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+                        for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
                         {
                             if (this.layersVisibled[iLayer])
                             {
@@ -530,10 +548,10 @@ namespace Grayscale.TileToPng
                                 {
                                     for (int col = 0; col < cols; col++)
                                     {
-                                        if (null != this.gridImages[iLayer][row][col])
+                                        if (null != this.GridImages[iLayer][row][col])
                                         {
                                             // マージン無し
-                                            g.DrawImage(this.gridImages[iLayer][row][col],
+                                            g.DrawImage(this.GridImages[iLayer][row][col],
                                                 col * this.grid.CellW,
                                                 row * this.grid.CellH
                                                 );
@@ -585,7 +603,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー関連（編集レイヤー・ラジオボタン）
             //────────────────────────────────────────
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 if (this.layersEditsRadiobuttons[iLayer].Contains(e.Location))
                 {
@@ -598,7 +616,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // レイヤー関連（可視レイヤー・チェックボックス）
             //────────────────────────────────────────
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
+            for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
             {
                 if (this.layersVisibledCheckboxes[iLayer].Contains(e.Location))
                 {
@@ -655,24 +673,24 @@ namespace Grayscale.TileToPng
                     //────────────────────────────────────────
                     case Keys.C:
                         // コピー
-                        this.clipboardFilename = this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
-                        this.clipboardImage = this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
+                        this.clipboardFilename = this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
+                        this.clipboardImage = this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
                         break;
 
                     case Keys.X:
                         // カット
-                        this.clipboardFilename = this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
-                        this.clipboardImage = this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
+                        this.clipboardFilename = this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
+                        this.clipboardImage = this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X];
 
-                        this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
-                        this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
+                        this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
+                        this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
                         this.Refresh();
                         break;
 
                     case Keys.V:
                         // ペースト
-                        this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardFilename;
-                        this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardImage;
+                        this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardFilename;
+                        this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = this.clipboardImage;
                         this.Refresh();
                         break;
 
@@ -681,12 +699,22 @@ namespace Grayscale.TileToPng
                     //────────────────────────────────────────
                     case Keys.S:
                         // 保存
-                        this.SaveWorking();
+                        {
+                            SavingWork.ContextModel context = new SavingWork.ContextModel(this);
+                            SavingWork.InputModel input = new SavingWork.InputModel();
+                            SavingWork.OutputModel output = new SavingWork.OutputModel();
+                            SavingWork.Action.Perform(context, input, output);
+                        }
                         break;
 
                     case Keys.L:
-                        // 再開
-                        this.LoadWorking();
+                        // 前回の作業状態から再開。
+                        {
+                            LoadingWork.ContextModel context = new LoadingWork.ContextModel(this);
+                            LoadingWork.InputModel input = new LoadingWork.InputModel();
+                            LoadingWork.OutputModel output = new LoadingWork.OutputModel();
+                            LoadingWork.Action.Perform(context, input, output);
+                        }
                         break;
                 }
             }
@@ -730,8 +758,8 @@ namespace Grayscale.TileToPng
                 // 編集
                 //────────────────────────────────────────
                 case Keys.Delete://削除
-                    this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
-                    this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
+                    this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
+                    this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = null;
                     this.Refresh();
                     break;
 
@@ -766,7 +794,7 @@ namespace Grayscale.TileToPng
         private void DoNewline()
         {
             if (
-                this.cursorPos.Y + 1 < GRID_MAX_HEIGHT
+                this.cursorPos.Y + 1 < GridMaxHeight
             )
             {
                 // 強制改行
@@ -787,22 +815,22 @@ namespace Grayscale.TileToPng
             foreach (string name in fileNames)
             {
                 if (
-                    GRID_MAX_WIDTH <= this.cursorPos.X
+                    GridMaxWidth <= this.cursorPos.X
                     )
                 {
                     this.DoNewline();
                 }
 
                 if (
-                    this.cursorPos.X < GRID_MAX_WIDTH
+                    this.cursorPos.X < GridMaxWidth
                     &&
-                    this.cursorPos.Y < GRID_MAX_HEIGHT
+                    this.cursorPos.Y < GridMaxHeight
                     )
                 {
-                    this.gridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = name;
+                    this.GridFilenames[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = name;
 
                     // とりあえず画像読み込み
-                    this.gridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = Image.FromFile(name);
+                    this.GridImages[this.cursorZ][this.cursorPos.Y][this.cursorPos.X] = Image.FromFile(name);
 
                     // カーソルを右へ。
                     this.cursorPos.X++;
@@ -810,52 +838,6 @@ namespace Grayscale.TileToPng
                     this.Refresh();
                 }
             }
-        }
-
-        /// <summary>
-        /// 前回の作業状態から再開。
-        /// </summary>
-        private void LoadWorking()
-        {
-            {
-                LoadingWork.ContextModel context = new LoadingWork.ContextModel(this);
-                LoadingWork.InputModel input = new LoadingWork.InputModel();
-                LoadingWork.OutputModel output = new LoadingWork.OutputModel();
-                LoadingWork.Action.Perform(context, input, output);
-            }
-        }
-
-        /// <summary>
-        /// 作業状態の保存。
-        /// </summary>
-        private void SaveWorking()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
-            {
-                for (int y = 0; y < MainUserControl.GRID_MAX_HEIGHT; y++)
-                {
-                    for (int x = 0; x < MainUserControl.GRID_MAX_WIDTH; x++)
-                    {
-                        string filename = this.gridFilenames[iLayer][y][x];
-
-
-                        // フォルダーへのパスを「%HOME%」という文字に置き換えて短くするんだぜ☆（＾▽＾）
-                        if (null != filename && filename.StartsWith(Application.StartupPath))
-                        {
-                            filename = "%HOME%" + filename.Substring(Application.StartupPath.Length);
-                        }
-
-                        sb.Append(filename);
-                        sb.Append(",");
-                    }
-                    sb.AppendLine();
-                }
-            }
-
-            string file = Path.Combine(Application.StartupPath, "TileToPng_save.txt");
-            File.WriteAllText(file, sb.ToString());
         }
 
         /// <summary>
