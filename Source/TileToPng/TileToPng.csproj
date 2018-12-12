@@ -87,6 +87,7 @@
     <Compile Include="Actions\File\SavingTileMap\ContextModel.cs" />
     <Compile Include="Actions\File\SavingTileMap\InputModel.cs" />
     <Compile Include="Actions\File\SavingTileMap\OutputModel.cs" />
+    <Compile Include="CursorModel\RectangleCursor.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

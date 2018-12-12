@@ -1,6 +1,7 @@
 ﻿using Grayscale.TileToPng.CommandLineModel;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Grayscale.TileToPng
@@ -33,6 +34,7 @@ namespace Grayscale.TileToPng
 
             string binary = Convert.ToString(this.ucMain1.Selection, 2);
             var message = string.Format(
+                CultureInfo.CurrentCulture,
                 "デバッグ binary={0} scanOrder={1} margin={2}",
                 binary,
                 commandline.ScanOrder,

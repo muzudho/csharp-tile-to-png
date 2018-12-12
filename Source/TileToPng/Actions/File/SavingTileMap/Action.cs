@@ -39,10 +39,10 @@ namespace Grayscale.TileToPng.Actions.SavingTileMap
                 {
                     for (int x = 0; x < MainUserControl.GridMaxWidth; x++)
                     {
-                        string filename = context.MainUserControl.GridFilenames[iLayer][y][x];
+                        string filename = context.MainUserControl.GridFileNames[iLayer][y][x];
 
                         // フォルダーへのパスを「%HOME%」という文字に置き換えて短くするんだぜ☆（＾▽＾）
-                        if (null != filename && filename.StartsWith(Application.StartupPath))
+                        if (null != filename && filename.StartsWith(Application.StartupPath, StringComparison.CurrentCulture))
                         {
                             filename = "%HOME%" + filename.Substring(Application.StartupPath.Length);
                         }

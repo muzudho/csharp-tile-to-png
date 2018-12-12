@@ -48,19 +48,19 @@ namespace Grayscale.TileToPng.Actions.LoadingTileMap
                             index++;
 
                             // 「%HOME%」という文字列が含まれていれば、フォルダーへのパスに置き換えるぜ☆（＾▽＾）
-                            if (-1 < token.IndexOf("%HOME%"))
+                            if (-1 < token.IndexOf("%HOME%", StringComparison.CurrentCulture))
                             {
                                 token = token.Replace("%HOME%", Application.StartupPath);
                             }
 
                             if (string.IsNullOrEmpty(token))
                             {
-                                context.MainUserControl.GridFilenames[iLayer][y][x] = "";
+                                context.MainUserControl.GridFileNames[iLayer][y][x] = "";
                                 context.MainUserControl.GridImages[iLayer][y][x] = null;
                             }
                             else
                             {
-                                context.MainUserControl.GridFilenames[iLayer][y][x] = token;
+                                context.MainUserControl.GridFileNames[iLayer][y][x] = token;
                                 // とりあえず画像読み込み
                                 context.MainUserControl.GridImages[iLayer][y][x] = Image.FromFile(token);
                             }
