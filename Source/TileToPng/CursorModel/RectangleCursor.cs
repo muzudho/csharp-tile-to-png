@@ -32,7 +32,8 @@ namespace Grayscale.TileToPng
         /// </summary>
         public RectangleCursor()
         {
-
+            this.Position = new Point();
+            this.Bounds = new RectangleF();
         }
 
         /// <summary>
@@ -69,6 +70,32 @@ namespace Grayscale.TileToPng
         public void SetTop(int top)
         {
             this.Position = new Point(this.Position.X, top);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        public void SetLocationPixel(float left, float top)
+        {
+            this.Bounds = new RectangleF(
+                left,
+                top,
+                this.Bounds.Width,
+                this.Bounds.Height);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="top"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public void SetBoundsPixel(float left, float top, float width, float height)
+        {
+            this.Bounds = new RectangleF(left, top, width, height);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// 水色のカーソル
         /// </summary>
-        RectangleCursor RectangleCursor { get; set; } = new RectangleCursor();
+        RectangleCursor RectangleCursor { get; set; }
 
         /// <summary>
         /// レイヤー表示（編集レイヤー・ラジオボタン）
@@ -179,9 +179,8 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // カーソル
             //────────────────────────────────────────
-            this.RectangleCursor.Position = new Point();
-            this.RectangleCursor.Bounds = new RectangleF();
-            this.UpdateCursor();
+            this.RectangleCursor = new RectangleCursor();
+            this.UpdateCursorPixel();
 
             //────────────────────────────────────────
             // テーブル
@@ -255,15 +254,6 @@ namespace Grayscale.TileToPng
                 this.resizeHandle.X + this.resizeHandle.Width / 2,
                 this.resizeHandle.Y + this.resizeHandle.Height / 2
                 );
-        }
-
-        private void UpdateCursor()
-        {
-            this.RectangleCursor.Bounds = new RectangleF(
-                this.RectangleCursor.Position.X * this.grid.CellW + this.grid.OriginX,
-                this.RectangleCursor.Position.Y * this.grid.CellH + this.grid.OriginY,
-                this.grid.CellW,
-                this.grid.CellH);
         }
 
         /// <summary>
@@ -628,12 +618,11 @@ namespace Grayscale.TileToPng
             if (!isRefresh)
             {
                 // まだ何もクリックしていなければ、カーソル移動をする。
-                this.RectangleCursor.Bounds = new RectangleF(
-                    (int)((e.X - this.grid.OriginX) / this.grid.CellW),
-                    (int)((e.Y - this.grid.OriginY) / this.grid.CellH),
-                    this.RectangleCursor.Bounds.Width,
-                    this.RectangleCursor.Bounds.Height);
-                this.UpdateCursor();
+                RectangleCursor.SetLocationPixel(
+                    (int)((e.X - grid.OriginX) / grid.CellW),
+                    (int)((e.Y - grid.OriginY) / grid.CellH));
+
+                this.UpdateCursorPixel();
                 isRefresh = true;
             }
 
@@ -728,31 +717,31 @@ namespace Grayscale.TileToPng
                 //────────────────────────────────────────
                 case Keys.Enter://改行
                     this.DoNewline();
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Up://↑
                     this.RectangleCursor.MoveToBottom(-1);
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Right://→
                     this.RectangleCursor.MoveToRight(1);
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Down://↓
                     this.RectangleCursor.MoveToBottom(1);
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                     break;
 
                 case Keys.Left://←
                     this.RectangleCursor.MoveToRight(-1);
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                     break;
 
@@ -836,7 +825,7 @@ namespace Grayscale.TileToPng
 
                     // カーソルを右へ。
                     this.RectangleCursor.MoveToRight(1);
-                    this.UpdateCursor();
+                    this.UpdateCursorPixel();
                     this.Refresh();
                 }
             }
@@ -849,6 +838,15 @@ namespace Grayscale.TileToPng
         {
             // メニュー・バー
             this.Menubar.UpdateSize(this.Width);
+        }
+
+        private void UpdateCursorPixel()
+        {
+            RectangleCursor.SetBoundsPixel(
+                RectangleCursor.Position.X * grid.CellW + grid.OriginX,
+                RectangleCursor.Position.Y * grid.CellH + grid.OriginY,
+                grid.CellW,
+                grid.CellH);
         }
     }
 }
