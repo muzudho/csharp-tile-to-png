@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\TileToPng.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\bin\TileToPng.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -86,7 +88,7 @@
     <Compile Include="Options\IEngineOption.cs" />
     <Compile Include="Options\EngineOptionNames.cs" />
     <Compile Include="Options\IEngineOptions.cs" />
-    <Compile Include="CommandLine\Commandline.cs" />
+    <Compile Include="CommandLine\ICommandline.cs" />
     <Compile Include="CommandLine\Margin.cs" />
     <Compile Include="CommandLine\ScanOrder.cs" />
     <Compile Include="Menu\CursorMode.cs" />
@@ -98,7 +100,7 @@
     <Compile Include="Options\EngineOption_BoolImpl.cs" />
     <Compile Include="Options\EngineOption_NumberImpl.cs" />
     <Compile Include="Options\EngineOption_StringImpl.cs" />
-    <Compile Include="CommandLine\CommandlineImpl.cs" />
+    <Compile Include="CommandLine\Commandline.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="CommandLine\MarginImpl.cs" />
     <Compile Include="CommandLine\UtilCommandlineParser.cs" />

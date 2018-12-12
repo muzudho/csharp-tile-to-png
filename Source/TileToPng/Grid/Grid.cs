@@ -7,6 +7,13 @@ namespace Grayscale.TileToPng
     /// </summary>
     public class Grid
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ox"></param>
+        /// <param name="oy"></param>
+        /// <param name="cellW"></param>
+        /// <param name="cellH"></param>
         public Grid(
             float ox,
             float oy,
@@ -45,11 +52,17 @@ namespace Grayscale.TileToPng
         /// </summary>
         public PointF End { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Cols
         {
             get { return (int)((End.X - Ox) / CellW); }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Rows
         {
             get { return (int)((End.Y - Oy) / CellH); }

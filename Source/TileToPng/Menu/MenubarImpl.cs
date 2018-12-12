@@ -1,11 +1,17 @@
-﻿using Grayscale.TileToPng.n___200_menu____;
+﻿using Grayscale.TileToPng.Menu;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Grayscale.TileToPng.n200____menu____
+namespace Grayscale.TileToPng.Menu
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MenubarImpl : Menubar
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public MenubarImpl()
         {
             int height = 20;//グラデーションのための幅
@@ -23,6 +29,14 @@ namespace Grayscale.TileToPng.n200____menu____
             this.m_cursorMode_ = CursorMode.Pointer;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="font"></param>
         public MenubarImpl(int x, int y, int width, int height, Font font)
         {
             this.m_bounds_ = new Rectangle(x,y,width,height);

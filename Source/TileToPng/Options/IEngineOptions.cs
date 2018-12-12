@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.options
+﻿namespace Grayscale.TileToPng.Options
 {
     /// <summary>
     /// USI「setoption」コマンドのリストです。

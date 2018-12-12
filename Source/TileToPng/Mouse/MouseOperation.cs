@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.n___300_mouse___
+﻿namespace Grayscale.TileToPng.Mouse
 {
     interface MouseOperation
     {

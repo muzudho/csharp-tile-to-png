@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Grayscale.TileToPng.n200____menu____.MenubarImpl menubarImpl1 = new Grayscale.TileToPng.n200____menu____.MenubarImpl();
+            Grayscale.TileToPng.Menu.MenubarImpl menubarImpl1 = new Grayscale.TileToPng.Menu.MenubarImpl();
             Grayscale.TileToPng.CommandLine.MarginImpl marginImpl1 = new Grayscale.TileToPng.CommandLine.MarginImpl();
             this.ucMain1 = new Grayscale.TileToPng.UcMain();
             this.ucCommandline1 = new Grayscale.TileToPng.UcCommandline();

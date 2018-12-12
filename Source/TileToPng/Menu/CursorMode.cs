@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.n___200_menu____
+﻿namespace Grayscale.TileToPng.Menu
 {
     /// <summary>
     /// カーソル操作の効果

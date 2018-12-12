@@ -1,7 +1,6 @@
 ﻿using Grayscale.TileToPng.CommandLine;
-using Grayscale.TileToPng.n___200_menu____;
-using Grayscale.TileToPng.n200____menu____;
-using Grayscale.TileToPng.options;
+using Grayscale.TileToPng.Menu;
+using Grayscale.TileToPng.Options;
 using System;
 using System.Drawing;
 using System.IO;

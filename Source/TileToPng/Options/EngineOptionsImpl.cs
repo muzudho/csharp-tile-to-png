@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace Grayscale.TileToPng.options
+namespace Grayscale.TileToPng.Options
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EngineOptionsImpl : IEngineOptions
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public EngineOptionsImpl()
         {
             this.m_entries_ = new Dictionary<string, IEngineOption>();

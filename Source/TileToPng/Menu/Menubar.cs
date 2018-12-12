@@ -1,7 +1,10 @@
 ﻿using System.Drawing;
 
-namespace Grayscale.TileToPng.n___200_menu____
+namespace Grayscale.TileToPng.Menu
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface Menubar
     {
         /// <summary>

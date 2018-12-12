@@ -1,6 +1,6 @@
-﻿using Grayscale.TileToPng.n___300_mouse___;
+﻿using Grayscale.TileToPng.Mouse;
 
-namespace Grayscale.TileToPng.n300____mouse___
+namespace Grayscale.TileToPng.Mouse
 {
     public class MouseOperationImpl : MouseOperation
     {

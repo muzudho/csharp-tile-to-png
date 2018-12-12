@@ -1,19 +1,34 @@
 ﻿using System;
 
-namespace Grayscale.TileToPng.options
+namespace Grayscale.TileToPng.Options
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EngineOption_NumberImpl : IEngineOption
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public EngineOption_NumberImpl()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public EngineOption_NumberImpl(long value)
         {
             this.m_value_ = value;
             this.m_default_ = value;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
         public EngineOption_NumberImpl(long value, long defaultValue)
         {
             this.m_value_ = value;

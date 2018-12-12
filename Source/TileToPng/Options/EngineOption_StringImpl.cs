@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Grayscale.TileToPng.options
+namespace Grayscale.TileToPng.Options
 {
     public class EngineOption_StringImpl : IEngineOption
     {

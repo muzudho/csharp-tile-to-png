@@ -16,7 +16,7 @@ namespace Grayscale.TileToPng.CommandLine
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public static Commandline Parse(string line)
+        public static ICommandline Parse(string line)
         {
             string commandName = "";
             long number = 0L;
@@ -134,7 +134,7 @@ namespace Grayscale.TileToPng.CommandLine
                     break;
             }
 
-            return new CommandlineImpl(
+            return new Commandline(
                 number,
                 scanOrder,
                 margin,

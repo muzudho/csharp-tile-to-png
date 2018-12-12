@@ -1,47 +1,72 @@
-﻿using System.Drawing;
-
-namespace Grayscale.TileToPng.CommandLine
+﻿namespace Grayscale.TileToPng.CommandLine
 {
-    public interface Commandline
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Commandline : ICommandline
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="scanOrder"></param>
+        /// <param name="margin"></param>
+        /// <param name="colorA"></param>
+        /// <param name="colorR"></param>
+        /// <param name="colorG"></param>
+        /// <param name="colorB"></param>
+        public Commandline(
+            long number,
+            ScanOrder scanOrder,
+            Margin margin,
+            int colorA,
+            int colorR,
+            int colorG,
+            int colorB
+            )
+        {
+            this.Number = number;
+            this.ScanOrder = scanOrder;
+            this.Margin = margin;
+            this.ColorA = colorA;
+            this.ColorR = colorR;
+            this.ColorG = colorG;
+            this.ColorB = colorB;
+        }
+
         /// <summary>
         /// 何かしらの指定された数字。用途は任意。
         /// </summary>
-        long GetNumber();
-        void SetNumber(long value);
+        public long Number { get; set; }
 
         /// <summary>
         /// 何かしらのマージン。北、東、南、西。用途は任意。
         /// </summary>
-        Margin GetMargin();
-        void SetMargin(Margin value);
+        public Margin Margin { get; set; }
 
         /// <summary>
         /// 何かしらの色。
         /// </summary>
-        int GetColorA();
-        void SetColorA(int value);
+        public int ColorA { get; set; }
+
         /// <summary>
         /// 何かしらの色。
         /// </summary>
-        int GetColorR();
-        void SetColorR(int value);
+        public int ColorR { get; set; }
+
         /// <summary>
         /// 何かしらの色。
         /// </summary>
-        int GetColorG();
-        void SetColorG(int value);
+        public int ColorG { get; set; }
+
         /// <summary>
         /// 何かしらの色。
         /// </summary>
-        int GetColorB();
-        void SetColorB(int value);
+        public int ColorB { get; set; }
 
         /// <summary>
         /// 走査する順番。
         /// </summary>
-        ScanOrder GetScanOrder();
-        void SetScanOrder(ScanOrder value);
-
+        public ScanOrder ScanOrder { get; set; }
     }
 }
