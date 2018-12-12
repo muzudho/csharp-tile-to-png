@@ -9,8 +9,14 @@ using System.Windows.Forms;
 
 namespace Grayscale.TileToPng
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class UcMain : UserControl
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public UcMain()
         {
             InitializeComponent();
@@ -115,8 +121,8 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// 自作メニュー・バー
         /// </summary>
-        Menubar menubar;
-        public Menubar Menubar
+        IMenubar menubar;
+        public IMenubar Menubar
         {
             get { return this.menubar; }
             set { this.menubar = value; }
@@ -217,7 +223,7 @@ namespace Grayscale.TileToPng
             //────────────────────────────────────────
             // メニュー・バー
             //────────────────────────────────────────
-            this.menubar = new MenubarImpl(0,0,10,20, this.Font);
+            this.menubar = new Menubar(0,0,10,20, this.Font);
             this.OnSizeUpdated();
         }
 

@@ -2,37 +2,38 @@
 
 namespace Grayscale.TileToPng.Options
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EngineOption_BoolImpl : IEngineOption
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public EngineOption_BoolImpl()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
         public EngineOption_BoolImpl(bool value, bool defaultValue)
         {
-            this.m_value_ = value;
-            this.m_default_ = defaultValue;
+            this.Value = value;
+            this.Default = defaultValue;
         }
 
         /// <summary>
         /// 既定値
         /// </summary>
-        bool m_default_;
-        public object Default
-        {
-            get { return this.m_default_; }
-            set { this.m_default_ = (bool)value; }
-        }
+        public object Default { get; set; }
 
         /// <summary>
         /// 現在値
         /// </summary>
-        bool m_value_;
-        public object Value
-        {
-            get { return this.m_value_; }
-            set { this.m_value_ = (bool)value; }
-        }
+        public object Value { get; set; }
 
         /// <summary>
         /// 論理値型でのみ使用可能。論理値型でない場合、エラー。
@@ -40,7 +41,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public bool IsTrue()
         {
-            return this.m_value_;
+            return (bool)this.Value;
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace Grayscale.TileToPng.Options
         {
             if (bool.TryParse(value, out bool result))
             {
-                this.m_value_ = result;
+                this.Value = result;
             }
         }
     }

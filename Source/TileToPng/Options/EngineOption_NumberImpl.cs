@@ -20,8 +20,8 @@ namespace Grayscale.TileToPng.Options
         /// <param name="value"></param>
         public EngineOption_NumberImpl(long value)
         {
-            this.m_value_ = value;
-            this.m_default_ = value;
+            this.Value = value;
+            this.Default = value;
         }
 
         /// <summary>
@@ -31,29 +31,19 @@ namespace Grayscale.TileToPng.Options
         /// <param name="defaultValue"></param>
         public EngineOption_NumberImpl(long value, long defaultValue)
         {
-            this.m_value_ = value;
-            this.m_default_ = defaultValue;
+            this.Value = value;
+            this.Default = defaultValue;
         }
 
         /// <summary>
         /// 既定値 long
         /// </summary>
-        long m_default_;
-        public object Default
-        {
-            get { return this.m_default_; }
-            set { this.m_default_ = (long)value; }
-        }
+        public object Default { get; set; }
 
         /// <summary>
         /// 現在値 long
         /// </summary>
-        long m_value_;
-        public object Value
-        {
-            get { return this.m_value_; }
-            set { this.m_value_ = (long)value; }
-        }
+        public object Value { get; set; }
 
         /// <summary>
         /// 論理値型でのみ使用可能。論理値型でない場合、エラー。
@@ -70,7 +60,7 @@ namespace Grayscale.TileToPng.Options
         /// <returns></returns>
         public long GetNumber()
         {
-            return this.m_value_;
+            return (long)this.Value;
         }
 
         /// <summary>
@@ -81,7 +71,7 @@ namespace Grayscale.TileToPng.Options
         {
             if (long.TryParse(value, out long result))
             {
-                this.m_value_ = result;
+                this.Value = result;
             }
         }
     }

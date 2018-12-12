@@ -92,7 +92,7 @@
     <Compile Include="CommandLine\Margin.cs" />
     <Compile Include="CommandLine\ScanOrder.cs" />
     <Compile Include="Menu\CursorMode.cs" />
-    <Compile Include="Menu\Menubar.cs" />
+    <Compile Include="Menu\IMenubar.cs" />
     <Compile Include="Mouse\MouseOperation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="CommandLine\MarginImpl.cs" />
     <Compile Include="CommandLine\UtilCommandlineParser.cs" />
-    <Compile Include="Menu\MenubarImpl.cs" />
+    <Compile Include="Menu\Menubar.cs" />
     <Compile Include="Mouse\MouseOperationImpl.cs" />
     <Compile Include="UcCommandline.cs">
       <SubType>UserControl</SubType>
