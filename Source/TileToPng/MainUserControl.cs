@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using LoadingWork = Grayscale.TileToPng.Actions.LoadingWork;
 
 namespace Grayscale.TileToPng
 {
@@ -58,11 +59,11 @@ namespace Grayscale.TileToPng
         /// <summary>
         /// ファイル名のテーブル。
         /// </summary>
-        string[][][] gridFilenames;
-        Image[][][] gridImages;
-        const int GRID_MAX_WIDTH = 30;
-        const int GRID_MAX_HEIGHT = 30;
-        const int GRID_MAX_LAYER = 5;
+        public string[][][] gridFilenames;
+        public Image[][][] gridImages;
+        public const int GRID_MAX_WIDTH = 30;
+        public const int GRID_MAX_HEIGHT = 30;
+        public const int GRID_MAX_LAYER = 5;
 
         /// <summary>
         /// （コピー＆ペースト）
@@ -816,45 +817,11 @@ namespace Grayscale.TileToPng
         /// </summary>
         private void LoadWorking()
         {
-            string file = Path.Combine(Application.StartupPath, "TileToPng_save.txt");
-            if (File.Exists(file))
             {
-                string text = File.ReadAllText(file);
-
-                string[] tokens = text.Split(',');
-                int index = 0;
-
-                for (int iLayer = 0; iLayer < MainUserControl.GRID_MAX_LAYER; iLayer++)
-                {
-                    for (int y = 0; y < MainUserControl.GRID_MAX_HEIGHT; y++)
-                    {
-                        for (int x = 0; x < MainUserControl.GRID_MAX_WIDTH; x++)
-                        {
-                            string token = tokens[index].Trim();
-                            index++;
-
-                            // 「%HOME%」という文字列が含まれていれば、フォルダーへのパスに置き換えるぜ☆（＾▽＾）
-                            if (-1 < token.IndexOf("%HOME%"))
-                            {
-                                token = token.Replace("%HOME%", Application.StartupPath);
-                            }
-
-                            if (string.IsNullOrEmpty(token))
-                            {
-                                this.gridFilenames[iLayer][y][x] = "";
-                                this.gridImages[iLayer][y][x] = null;
-                            }
-                            else
-                            {
-                                this.gridFilenames[iLayer][y][x] = token;
-                                // とりあえず画像読み込み
-                                this.gridImages[iLayer][y][x] = Image.FromFile(token);
-                            }
-                        }
-                    }
-                }
-
-                this.Refresh();
+                LoadingWork.ContextModel context = new LoadingWork.ContextModel(this);
+                LoadingWork.InputModel input = new LoadingWork.InputModel();
+                LoadingWork.OutputModel output = new LoadingWork.OutputModel();
+                LoadingWork.Action.Perform(context, input, output);
             }
         }
 

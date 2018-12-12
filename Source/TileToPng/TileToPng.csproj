@@ -79,6 +79,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\File\LoadingWork\Action.cs" />
+    <Compile Include="Actions\File\LoadingWork\ContextModel.cs" />
+    <Compile Include="Actions\File\LoadingWork\InputModel.cs" />
+    <Compile Include="Actions\File\LoadingWork\OutputModel.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

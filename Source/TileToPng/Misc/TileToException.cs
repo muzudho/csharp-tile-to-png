@@ -10,6 +10,7 @@ namespace Grayscale.TileToPng
     /// <summary>
     /// 
     /// </summary>
+    [Serializable]
     public class TileToException : Exception
     {
         /// <summary>
