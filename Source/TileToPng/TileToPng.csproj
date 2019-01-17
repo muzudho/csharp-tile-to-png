@@ -91,18 +91,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="KeyMapping\ControlC\Action.cs" />
-    <Compile Include="KeyMapping\ControlC\ContextModel.cs" />
-    <Compile Include="KeyMapping\ControlC\InputModel.cs" />
-    <Compile Include="KeyMapping\ControlC\OutputModel.cs" />
-    <Compile Include="KeyMapping\ControlV\Action.cs" />
-    <Compile Include="KeyMapping\ControlV\ContextModel.cs" />
-    <Compile Include="KeyMapping\ControlV\InputModel.cs" />
-    <Compile Include="KeyMapping\ControlV\OutputModel.cs" />
-    <Compile Include="KeyMapping\ControlX\Action.cs" />
-    <Compile Include="KeyMapping\ControlX\ContextModel.cs" />
-    <Compile Include="KeyMapping\ControlX\InputModel.cs" />
-    <Compile Include="KeyMapping\ControlX\OutputModel.cs" />
+    <Compile Include="Actions\KeyMapping\ControlCStep.cs" />
+    <Compile Include="Actions\KeyMapping\ControlVStep.cs" />
+    <Compile Include="Actions\KeyMapping\ControlXStep.cs" />
     <Compile Include="Misc\TileToException.cs" />
     <Compile Include="Options\IEngineOption.cs" />
     <Compile Include="Options\EngineOptionNames.cs" />
@@ -170,6 +161,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="stylecop.json" />
     <None Include="tile-to-png.pfx" />
     <None Include="TileToPng.ruleset" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿namespace Grayscale.TileToPng.Options
 {
     /// <summary>
-    /// 
+    /// エンジンオプション。
     /// </summary>
     public abstract class EngineOptionNames
     {

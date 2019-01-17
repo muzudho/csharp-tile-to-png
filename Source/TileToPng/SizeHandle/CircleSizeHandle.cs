@@ -1,30 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Grayscale.TileToPng
+﻿namespace Grayscale.TileToPng
 {
+    using System.Drawing;
+
     /// <summary>
     /// リサイズ用のつまみ。
     /// </summary>
     public class CircleSizeHandle
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="CircleSizeHandle"/> class.
         /// </summary>
-        public RectangleF Bounds { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool Pressing { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <param name="left">左。</param>
+        /// <param name="top">上。</param>
         public CircleSizeHandle(float left, float top)
         {
             this.Bounds = new RectangleF(
@@ -35,10 +22,20 @@ namespace Grayscale.TileToPng
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets 矩形。
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="top"></param>
+        public RectangleF Bounds { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether 押下。
+        /// </summary>
+        public bool Pressing { get; set; }
+
+        /// <summary>
+        /// 設定。
+        /// </summary>
+        /// <param name="left">左。</param>
+        /// <param name="top">上。</param>
         public void SetLocationPixel(float left, float top)
         {
             this.Bounds = new RectangleF(
