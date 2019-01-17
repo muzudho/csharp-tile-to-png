@@ -1,36 +1,35 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-
-namespace Grayscale.TileToPng.Actions.LoadingTileMap
+﻿namespace Grayscale.TileToPng.Actions.LoadingTileMap
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+
     /// <summary>
     /// タイルマップをCSV形式で読取。
     /// </summary>
-    public sealed class Action
+    public sealed class LoadingTileMapStep
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static void Perform(ContextModel context, InputModel input, OutputModel output)
+        public LoadingTileMapStep()
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
+        }
 
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+        /// <summary>
+        /// セーブファイル パス。
+        /// </summary>
+        public string InputSaveFile { get; set; }
 
-            if (output == null)
-            {
-                throw new ArgumentNullException("output");
-            }
+        /// <summary>
+        /// Gets ユーザーコントロール。
+        /// </summary>
+        public MainUserControl MainUserControl { get; set; }
 
-            string file = Path.Combine(Application.StartupPath, input.SaveFile);
+        /// <summary>
+        /// 実行。
+        /// </summary>
+        public void Perform()
+        {
+            string file = Path.Combine(Application.StartupPath, this.InputSaveFile);
             if (File.Exists(file))
             {
                 string text = File.ReadAllText(file);
@@ -62,23 +61,19 @@ namespace Grayscale.TileToPng.Actions.LoadingTileMap
 
                             if (string.IsNullOrEmpty(token))
                             {
-                                context.MainUserControl.TileMapModel.SetItem(iLayer, y, x, TileMapItem.Empty);
+                                this.MainUserControl.TileMapModel.SetItem(iLayer, y, x, TileMapItem.Empty);
                             }
                             else
                             {
                                 // とりあえず画像読み込み
-                                context.MainUserControl.TileMapModel.SetItem(iLayer, y, x, new TileMapItem(token, Image.FromFile(token)));
+                                this.MainUserControl.TileMapModel.SetItem(iLayer, y, x, new TileMapItem(token, Image.FromFile(token)));
                             }
                         }
                     }
                 }
 
-                context.MainUserControl.Refresh();
+                this.MainUserControl.Refresh();
             }
-        }
-
-        Action()
-        {
         }
     }
 }

@@ -674,27 +674,31 @@ namespace Grayscale.TileToPng
                         }
                         break;
 
-                    //────────────────────────────────────────
+                    // ────────────────────────────────────────
                     // 入出力
-                    //────────────────────────────────────────
+                    // ────────────────────────────────────────
                     case Keys.S:
                         // 保存
                         {
-                            SavingTileMap.ContextModel context = new SavingTileMap.ContextModel(this);
-                            SavingTileMap.InputModel input = new SavingTileMap.InputModel();
-                            SavingTileMap.OutputModel output = new SavingTileMap.OutputModel("TileToPng_save.txt");
-                            SavingTileMap.Action.Perform(context, input, output);
+                            new SavingTileMap.SavingTileMapStep()
+                            {
+                                MainUserControl = this,
+                                OutputSaveFile = "TileToPng_save.txt",
+                            }.Perform();
                         }
+
                         break;
 
                     case Keys.L:
                         // 前回の作業状態から再開。
                         {
-                            LoadingTileMap.ContextModel context = new LoadingTileMap.ContextModel(this);
-                            LoadingTileMap.InputModel input = new LoadingTileMap.InputModel("TileToPng_save.txt");
-                            LoadingTileMap.OutputModel output = new LoadingTileMap.OutputModel();
-                            LoadingTileMap.Action.Perform(context, input, output);
+                            new LoadingTileMap.LoadingTileMapStep()
+                            {
+                                MainUserControl = this,
+                                InputSaveFile = "TileToPng_save.txt",
+                            }.Perform();
                         }
+
                         break;
                 }
             }

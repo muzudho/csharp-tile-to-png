@@ -1,36 +1,35 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Windows.Forms;
-
-namespace Grayscale.TileToPng.Actions.SavingTileMap
+﻿namespace Grayscale.TileToPng.Actions.SavingTileMap
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Text;
+    using System.Windows.Forms;
+
     /// <summary>
     /// タイルマップをCSV形式で保存。
     /// </summary>
-    public sealed class Action
+    public sealed class SavingTileMapStep
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static void Perform(ContextModel context, InputModel input, OutputModel output)
+        public SavingTileMapStep()
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
+        }
 
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
+        /// <summary>
+        /// セーブファイル パス。
+        /// </summary>
+        public string OutputSaveFile { get; set; }
 
-            if (output == null)
-            {
-                throw new ArgumentNullException("output");
-            }
+        /// <summary>
+        /// ユーザーコントロール。
+        /// </summary>
+        public MainUserControl MainUserControl { get; set; }
 
+        /// <summary>
+        /// 実行。
+        /// </summary>
+        public void Perform()
+        {
             StringBuilder sb = new StringBuilder();
 
             for (int iLayer = 0; iLayer < MainUserControl.GridMaxLayer; iLayer++)
@@ -39,10 +38,10 @@ namespace Grayscale.TileToPng.Actions.SavingTileMap
                 {
                     for (int x = 0; x < MainUserControl.GridMaxWidth; x++)
                     {
-                        string filename = context.MainUserControl.TileMapModel.GetItem(iLayer, y, x).FileName;
+                        string filename = this.MainUserControl.TileMapModel.GetItem(iLayer, y, x).FileName;
 
                         // フォルダーへのパスを「%HOME%」という文字に置き換えて短くするんだぜ☆（＾▽＾）
-                        if (null != filename && filename.StartsWith(Application.StartupPath, StringComparison.CurrentCulture))
+                        if (filename != null && filename.StartsWith(Application.StartupPath, StringComparison.CurrentCulture))
                         {
                             filename = "%HOME%" + filename.Substring(Application.StartupPath.Length);
                         }
@@ -60,16 +59,13 @@ namespace Grayscale.TileToPng.Actions.SavingTileMap
                         sb.Append(filename);
                         sb.Append(",");
                     }
+
                     sb.AppendLine();
                 }
             }
 
-            string file = Path.Combine(Application.StartupPath, output.SaveFile);
+            string file = Path.Combine(Application.StartupPath, this.OutputSaveFile);
             File.WriteAllText(file, sb.ToString());
-        }
-
-        Action()
-        {
         }
     }
 }
