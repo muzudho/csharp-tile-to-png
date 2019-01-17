@@ -1,28 +1,28 @@
-﻿using Grayscale.TileToPng.CommandLineModel;
-using System;
-using System.Drawing;
-using System.Globalization;
-using System.Windows.Forms;
-
-namespace Grayscale.TileToPng
+﻿namespace Grayscale.TileToPng
 {
+    using System;
+    using System.Drawing;
+    using System.Globalization;
+    using System.Windows.Forms;
+    using Grayscale.TileToPng.CommandLineModel;
+
     /// <summary>
     /// メイン フォーム。
     /// </summary>
     public partial class Form1 : Form
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Form1"/> class.
         /// </summary>
         public Form1()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>
-        /// 
+        /// 更新。
         /// </summary>
-        /// <param name="line"></param>
+        /// <param name="line">コマンドライン。</param>
         public void UpdateCommandline(string line)
         {
             ICommandline commandline = UtilCommandlineParser.Parse(line);

@@ -28,7 +28,7 @@
         public void Perform()
         {
             var tile = this.MainUserControl.GetTileOnCursor();
-            this.MainUserControl.ClipboardFilename = tile.FileName;
+            this.MainUserControl.ClipboardFileName = tile.FileName;
             this.MainUserControl.ClipboardImage = tile.Image;
         }
     }

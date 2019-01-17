@@ -12,7 +12,7 @@
         //    get { return this.m_entries_; }
         //    set { this.m_entries_ = value; }
         // }
-        private Dictionary<string, IEngineOption> entries;
+        private readonly Dictionary<string, IEngineOption> entries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EngineOptionsImpl"/> class.

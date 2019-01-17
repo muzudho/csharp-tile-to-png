@@ -94,7 +94,7 @@
         /// <summary>
         /// Gets or sets （コピー＆ペースト）
         /// </summary>
-        public string ClipboardFilename { get; set; }
+        public string ClipboardFileName { get; set; }
 
         /// <summary>
         /// Gets or sets （コピー＆ペースト）
@@ -181,8 +181,8 @@
             this.grid = new Grid(
                 60.0f,
                 40.0f,
-                Program.tileWidth,
-                Program.tileHeight);
+                Program.TileWidth,
+                Program.TileHeight);
 
             // リサイズハンドル（リサイズ用のつまみ）は、グリッドの右下に付く。
             // タテ線５本分の横幅と、ヨコ線５本分の横幅
@@ -362,9 +362,9 @@
                 !(0 == this.grid.Cols || 0 == this.grid.Rows))
             {
                 string binary = Convert.ToString(this.Selection, 2);
-                int height = (int)(this.circleSizeHandle.Bounds.Height / this.grid.CellH);
-                int width = (int)(this.circleSizeHandle.Bounds.Width / this.grid.CellW);
 
+                // int height = (int)(this.circleSizeHandle.Bounds.Height / this.grid.CellH);
+                // int width = (int)(this.circleSizeHandle.Bounds.Width / this.grid.CellW);
                 PointF origin;
                 if (ScanOrder.Hsw == this.SelectionScanOrder)
                 {

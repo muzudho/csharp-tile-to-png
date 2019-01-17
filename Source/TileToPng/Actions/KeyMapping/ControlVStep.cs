@@ -28,7 +28,7 @@
         public void Perform()
         {
             this.MainUserControl.SetTileOnCursor(new TileMapItem(
-                this.MainUserControl.ClipboardFilename,
+                this.MainUserControl.ClipboardFileName,
                 this.MainUserControl.ClipboardImage));
             this.MainUserControl.Refresh();
         }

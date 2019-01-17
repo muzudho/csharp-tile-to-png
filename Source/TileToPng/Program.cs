@@ -1,5 +1,4 @@
-﻿using NLua;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
@@ -7,10 +6,69 @@ using System.Windows.Forms;
 [assembly: CLSCompliant(true)]
 namespace Grayscale.TileToPng
 {
+    using NLua;
+
+    /// <summary>
+    /// プログラム。
+    /// </summary>
     static class Program
     {
         /// <summary>
-        /// ファイル パスの短縮名が入っている。
+        /// Luaファイル名
+        /// </summary>
+        public const string LuaFileName = "Work/TileToPng.lua";
+
+        /// <summary>
+        /// タイル横幅。
+        /// </summary>
+        public static readonly int TileWidth;
+
+        /// <summary>
+        /// タイル縦幅。
+        /// </summary>
+        public static readonly int TileHeight;
+
+        /// <summary>
+        /// Luaスクリプト・ファイルを１個しか使わないのなら、インスタンス１つで十分。
+        /// </summary>
+        static Lua lua;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Program"/> class.
+        /// 静的コンストラクター
+        /// </summary>
+        static Program()
+        {
+            // Luaの初期設定
+            lua = new Lua();
+
+            // 初期化
+            lua.LoadCLRPackage();
+
+            // ファイルの読み込み
+            lua.DoFile(LuaFileName);
+
+            // タイル画像の横幅
+            var value = lua["TILE_WIDTH"];
+            if (!(value is double))
+            {
+                value = 32d;
+            }
+
+            TileWidth = (int)((double)value);
+
+            // タイル画像の縦幅
+            value = lua["TILE_HEIGHT"];
+            if (!(value is double))
+            {
+                value = 32d;
+            }
+
+            TileHeight = (int)((double)value);
+        }
+
+        /// <summary>
+        /// Gets or sets ファイル パスの短縮名が入っている。
         /// </summary>
         public static FileListModel FileListModel { get; set; }
 
@@ -30,7 +88,7 @@ namespace Grayscale.TileToPng
                 CultureInfo.CurrentCulture,
                 "fileList.ImagePath.Count: {0}.",
                 FileListModel.ImagePath.Count));
-            foreach(var pair in FileListModel.ImagePath)
+            foreach (var pair in FileListModel.ImagePath)
             {
                 Trace.WriteLine(string.Format(
                     CultureInfo.CurrentCulture,
@@ -44,38 +102,5 @@ namespace Grayscale.TileToPng
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
-
-        // Luaファイル名
-        public const string LUA_FILE = "Work/TileToPng.lua";
-
-        // 静的コンストラクター
-        static Program()
-        {
-            #region Luaの初期設定
-            lua = new Lua();
-            // 初期化
-            lua.LoadCLRPackage();
-
-            // ファイルの読み込み
-            lua.DoFile(LUA_FILE);
-
-            // タイル画像の横幅
-            var value = lua["TILE_WIDTH"];
-            if (!(value is double)) { value = 32d; }
-            tileWidth = (int)((double)value);
-
-            // タイル画像の縦幅
-            value = lua["TILE_HEIGHT"];
-            if (!(value is double)) { value = 32d; }
-            tileHeight = (int)((double)value);
-
-            #endregion
-        }
-
-        // Luaスクリプト・ファイルを１個しか使わないのなら、インスタンス１つで十分。
-        public static Lua lua;
-
-        public static int tileWidth;
-        public static int tileHeight;
     }
 }
