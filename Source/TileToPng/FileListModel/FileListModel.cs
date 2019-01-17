@@ -1,34 +1,34 @@
-﻿using Nett;
-using System.Collections.Generic;
-
-namespace Grayscale.TileToPng
+﻿namespace Grayscale.TileToPng
 {
+    using System.Collections.Generic;
+    using Nett;
+
     /// <summary>
     /// 番号と、ファイルパスを紐づけ。
     /// </summary>
     public class FileListModel
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="FileListModel"/> class.
         /// </summary>
-        /// <param name="path">ファイル パス。</param>
-        /// <returns></returns>
-        public static FileListModel ReadFile(string path)
+        public FileListModel()
         {
-            return Toml.ReadFile<FileListModel>(path);
+            this.ImagePath = new Dictionary<string, string>();
         }
 
         /// <summary>
-        /// 
+        /// Gets 画像パス。
         /// </summary>
         public Dictionary<string, string> ImagePath { get; private set; }
 
         /// <summary>
-        /// 
+        /// ファイル読み取り。
         /// </summary>
-        public FileListModel()
+        /// <param name="path">ファイル パス。</param>
+        /// <returns>ファイル一覧。</returns>
+        public static FileListModel ReadFile(string path)
         {
-            ImagePath = new Dictionary<string, string>();
+            return Toml.ReadFile<FileListModel>(path);
         }
     }
 }

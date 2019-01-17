@@ -1,19 +1,14 @@
-﻿using System.Drawing;
-
-namespace Grayscale.TileToPng
+﻿namespace Grayscale.TileToPng
 {
+    using System.Drawing;
+
     /// <summary>
     /// タイル マップ構造。
     /// </summary>
     public class TileMapModel
     {
         /// <summary>
-        /// レイヤー、行、列の３次元配列。
-        /// </summary>
-        public TileMapItem[][][] Model { get; set; }
-
-        /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="TileMapModel"/> class.
         /// </summary>
         public TileMapModel()
         {
@@ -29,24 +24,29 @@ namespace Grayscale.TileToPng
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets レイヤー、行、列の３次元配列。
         /// </summary>
-        /// <param name="layer"></param>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        /// <returns></returns>
+        public TileMapItem[][][] Model { get; set; }
+
+        /// <summary>
+        /// 項目取得。
+        /// </summary>
+        /// <param name="layer">レイヤー。</param>
+        /// <param name="row">行。</param>
+        /// <param name="column">列。</param>
+        /// <returns>タイル項目。</returns>
         public TileMapItem GetItem(int layer, int row, int column)
         {
             return this.Model[layer][row][column];
         }
 
         /// <summary>
-        /// 
+        /// 項目設定。
         /// </summary>
-        /// <param name="layer"></param>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        /// <param name="item"></param>
+        /// <param name="layer">レイヤー。</param>
+        /// <param name="row">行。</param>
+        /// <param name="column">列。</param>
+        /// <param name="item">タイル項目。</param>
         public void SetItem(int layer, int row, int column, TileMapItem item)
         {
             this.Model[layer][row][column] = item;

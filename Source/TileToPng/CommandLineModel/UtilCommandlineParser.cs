@@ -1,23 +1,23 @@
-﻿using System;
-using System.Globalization;
-
-namespace Grayscale.TileToPng.CommandLineModel
+﻿namespace Grayscale.TileToPng.CommandLineModel
 {
+    using System;
+    using System.Globalization;
+
     /// <summary>
-    /// 
+    /// コマンドライン パーサー。
     /// </summary>
     public abstract class UtilCommandlineParser
     {
         /// <summary>
         /// select 0b0000000000000000000000000000000000000000000000000000000000000000 hsw margin=1,1,1,1
-        /// 
+        ///
         /// [Option]
         /// hsw: horizontal read from south west. (ex. chess program)
         /// margin=1,1,1,1: offset from origin point. north,east,south,west.
         /// color=red: color.
         /// </summary>
-        /// <param name="line"></param>
-        /// <returns></returns>
+        /// <param name="line">コマンドライン。</param>
+        /// <returns>コマンドライン オブジェクト。</returns>
         public static ICommandline Parse(string line)
         {
             if (line == null)
@@ -25,7 +25,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                 throw new ArgumentNullException("line");
             }
 
-            string commandName = "";
+            string commandName = string.Empty;
             long number = 0L;
             ScanOrder scanOrder = ScanOrder.None;
             IMargin margin = new Margin();
@@ -33,7 +33,6 @@ namespace Grayscale.TileToPng.CommandLineModel
             int colorR = -1;
             int colorG = -1;
             int colorB = -1;
-
 
             string[] tokens = line.Split(' ');
             for (int iToken = 0; iToken < tokens.Length; iToken++)
@@ -54,8 +53,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                                 // 頭の 0b は、２進数を表す記号。
                                 // 特別な仕様として、見やすいように任意でコロンで区切りをつけることができるものとするぜ☆（＾～＾）
                                 // 0b:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:
-
-                                token = token.Replace(":", "");
+                                token = token.Replace(":", string.Empty);
 
                                 number = Convert.ToInt32(token, 2);
                             }
@@ -66,6 +64,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                             else if (token.StartsWith("margin=", false, CultureInfo.CurrentCulture))
                             {
                                 token = token.Substring("margin=".Length);
+
                                 // 残りはカンマ区切り。
                                 string[] numbers = token.Split(',');
                                 if (3 < numbers.Length)
@@ -94,6 +93,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                             else if (token.StartsWith("color=", false, CultureInfo.CurrentCulture))
                             {
                                 token = token.Substring("color=".Length);
+
                                 // 残りはカンマ区切り。ARGB
                                 string[] numbers = token.Split(',');
                                 if (3 < numbers.Length)
@@ -120,6 +120,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                                 }
                             }
                         }
+
                         break;
                 }
             }
@@ -136,6 +137,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                         colorG = 255;
                         colorB = 0;
                     }
+
                     break;
             }
 
@@ -146,8 +148,7 @@ namespace Grayscale.TileToPng.CommandLineModel
                 colorA,
                 colorR,
                 colorG,
-                colorB
-                );
+                colorB);
         }
     }
 }
