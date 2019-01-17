@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.Actions.SavingTileMap
+﻿namespace Grayscale.TileToPng.Actions
 {
     using System;
     using System.Drawing;
@@ -11,17 +11,20 @@
     /// </summary>
     public sealed class SavingTileMapStep
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SavingTileMapStep"/> class.
+        /// </summary>
         public SavingTileMapStep()
         {
         }
 
         /// <summary>
-        /// セーブファイル パス。
+        /// Gets or sets セーブファイル パス。
         /// </summary>
         public string OutputSaveFile { get; set; }
 
         /// <summary>
-        /// ユーザーコントロール。
+        /// Gets or sets ユーザーコントロール。
         /// </summary>
         public MainUserControl MainUserControl { get; set; }
 
@@ -47,7 +50,7 @@
                         }
 
                         // リストにあれば短縮名に置換。
-                        foreach(var pair in Program.FileListModel.ImagePath)
+                        foreach (var pair in Program.FileListModel.ImagePath)
                         {
                             if (pair.Value == filename)
                             {

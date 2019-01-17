@@ -1,4 +1,4 @@
-﻿namespace Grayscale.TileToPng.Actions.LoadingTileMap
+﻿namespace Grayscale.TileToPng.Actions
 {
     using System;
     using System.Drawing;
@@ -10,17 +10,20 @@
     /// </summary>
     public sealed class LoadingTileMapStep
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoadingTileMapStep"/> class.
+        /// </summary>
         public LoadingTileMapStep()
         {
         }
 
         /// <summary>
-        /// セーブファイル パス。
+        /// Gets or sets セーブファイル パス。
         /// </summary>
         public string InputSaveFile { get; set; }
 
         /// <summary>
-        /// Gets ユーザーコントロール。
+        /// Gets or sets ユーザーコントロール。
         /// </summary>
         public MainUserControl MainUserControl { get; set; }
 
